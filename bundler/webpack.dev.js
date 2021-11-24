@@ -12,6 +12,14 @@ module.exports = merge(commonConfiguration, {
   stats: "errors-warnings",
   mode: "development",
   target: "node",
+  module: {
+    rules: [
+      {
+        test: /\.xml$/i,
+        use: 'raw-loader',
+      },
+    ],
+  },
   devServer: {
     host: "local-ip",
     port: portFinderSync.getPort(8080),

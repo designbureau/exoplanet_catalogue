@@ -6,7 +6,7 @@ import * as xmljs from "xml-js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
-import starSystem from "./StarSystem";
+import StarSystem from "./StarSystem";
 
 /**
  * Base
@@ -60,7 +60,9 @@ material.roughness = 0.7;
 const systemParameters = {};
 systemParameters.distance = 215 * 2;
 
-let xml = starSystem();
+let xml = StarSystem();
+
+
 var options = {
   compact: true,
   ignoreComment: true,
@@ -92,8 +94,7 @@ const generateSystem = () => {
       let semimajoraxis, eccentricity, period, inclination, radius;
 
       planet.hasOwnProperty("radius")
-        ? (radius = parseFloat(planet.radius._text))
-        : (radius = parseFloat(planet.mass._text) * jupiterMass);
+        ? (radius = parseFloat(planet.radius._text)) : radius = 1;
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
@@ -119,6 +120,7 @@ const generateSystem = () => {
 
       planetMesh.position.x = semimajoraxis;
 
+      // TODO:these need to orbit relative to group center. They should already, but don't appear to.
       allPlanetsArray.push({
         mesh: planetMesh,
         semimajoraxis,
@@ -176,13 +178,22 @@ const generateSystem = () => {
     let binaryArray = [];
     Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
 
+    if(group === null){
+      group = new THREE.Group();
+      scene.add(group);
+    }
+
     binaryArray.map((binary) => {
       console.log(binary);
 
       binary.hasOwnProperty("star") &&
-        renderStar(binary.star, binary.separation._text, group);
+        renderStar(binary.star, (binary.hasOwnProperty("separation")? binary.separation._text : 500), group);
 
       binary.hasOwnProperty("binary") && renderBinary(binary.binary);
+      
+      //render planets
+      binary.hasOwnProperty("planet") && renderPlanet(binary.planet, group);
+
     });
   };
 
