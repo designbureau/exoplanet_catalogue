@@ -1,126 +1,75 @@
 const StarSystem = () => {
   return `
   <system>
-	<name>PH-1</name>
-	<name>PH-1</name>
-	<name>Kepler-64 (AB)</name>
-	<name>KIC 4862625</name>
-	<rightascension>19 52 51</rightascension>
-	<declination>+39 57 18</declination>
-	<distance>1500</distance>
-	<magJ errorminus="0.023" errorplus="0.023">12.714</magJ>
-	<magH errorminus="0.022" errorplus="0.022">12.461</magH>
-	<magK errorminus="0.021" errorplus="0.021">12.395</magK>
-	<binary>
-		<name>PH-1</name>
-		<name>Kepler-64</name>
-		<name>KIC 4862625</name>
-		<name>2MASS J19525162+3957183</name>
-		<separation unit="arcsec">0.7</separation>
-		<separation unit="AU">1000</separation>
-		<positionangle>123</positionangle>
-		<binary>
-			<name>PH-1 A</name>
-			<name>Kepler-64 A</name>
-			<name>KIC 4862625 A</name>
-			<period>20.000214</period>
-			<semimajoraxis>0.1744</semimajoraxis>
-			<eccentricity>0.21166048</eccentricity>
-			<periastron>348</periastron>
-			<star>
-				<name>PH-1 Aa</name>
-				<name>Kepler-64 Aa</name>
-				<name>KIC 4862625 Aa</name>
-				<mass>1.384</mass>
-				<radius>1.759</radius>
-				<spectraltype>F</spectraltype>
-			</star>
-			<star>
-				<name>PH-1 Ab</name>
-				<name>Kepler-64 Ab</name>
-				<name>KIC 4862625 Ab</name>
-				<mass>0.386</mass>
-				<radius>0.422</radius>
-				<spectraltype>M</spectraltype>
-			</star>
-			<planet>
-				<name>PH-1 A(ab) b</name>
-				<name>PH-1 b</name>
-				<name>KIC 4862625 A(ab) b</name>
-				<name>Planet Hunters 1 b</name>
-				<name>Kepler-64 b</name>
-				<name>Kepler-64 A(ab) b</name>
-				<name>KIC 4862625 b</name>
-				<list>Confirmed planets</list>
-				<radius>0.5631852</radius>
-				<period>138.506</period>
-				<semimajoraxis>0.634</semimajoraxis>
-				<eccentricity>0.0539</eccentricity>
-				<inclination>90.022</inclination>
-				<transittime errorminus="0.11" errorplus="0.11" unit="BJD">2455074.71</transittime>
-				<description>PH 1 b is a circumbinary planet in a quadruple star system. It is orbiting a double star and there is a second pair of stars at approximately 1000 AU. Citizen scientists discovered this planet by looking at many light curves using the online tool at planethunters.org.</description>
-				<discoverymethod>transit</discoverymethod>
-				<lastupdate>12/10/15</lastupdate>
-				<discoveryyear>2012</discoveryyear>
-				<image>PH1</image>
-				<imagedescription>An artist's conception of the planet in a four-star system. 
-		
-	Credit: Image by Haven Giguere/Yale.</imagedescription>
-				<list>Planets in binary systems, P-type</list>
-				<istransiting>1</istransiting>
-			</planet>
-		</binary>
-		<binary>
-			<name>PH-1 B</name>
-			<name>Kepler-64 B</name>
-			<name>KIC 4862625 B</name>
-			<separation unit="arcsec" upperlimit="0.4" />
-			<separation unit="AU" upperlimit="60" />
-			<star>
-				<name>PH-1 Ba</name>
-				<name>Kepler-64 Ba</name>
-				<name>KIC 4862625 Ba</name>
-				<mass>0.99</mass>
-				<spectraltype>G2</spectraltype>
-			</star>
-			<star>
-				<name>PH-1 Bb</name>
-				<name>Kepler-64 Bb</name>
-				<name>KIC 4862625 Bb</name>
-				<mass>0.51</mass>
-				<spectraltype>M2</spectraltype>
-			</star>
+  <name>24 Sex</name>
+  <rightascension>10 23 28.3693</rightascension>
+  <declination>-00 54 08.0771</declination>
+  <distance errorminus="4.9" errorplus="4.9">74.8</distance>
+  <star>
+      <name>24 Sex</name>
+      <name>24 Sextantis</name>
+      <name>HD 90043</name>
+      <name>HIP 50887</name>
+      <name>TYC 4905-1374-1</name>
+      <name>SAO 137532</name>
+      <name>BD-00 2332</name>
+      <name>2MASS J10232836-0054079</name>
+      <name>Gaia DR2 3830897080395058048</name>
+      <mass errorminus="0.08" errorplus="0.08">1.54</mass>
+      <radius errorminus="0.08" errorplus="0.08">4.9</radius>
+      <magV>7.38</magV>
+      <magB errorminus="0.015" errorplus="0.015">7.400</magB>
+      <magR errorminus="0.34" errorplus="0.34">6.41</magR>
+      <magJ errorminus="0.338" errorplus="0.338">5.292</magJ>
+      <magH errorminus="0.076" errorplus="0.076">4.486</magH>
+      <magK errorminus="0.016" errorplus="0.016">4.285</magK>
+      <temperature errorminus="44" errorplus="44">5098</temperature>
+      <metallicity errorminus="0.04" errorplus="0.04">-0.03</metallicity>
+      <spectraltype>G5</spectraltype>
+      <age errorminus="0.4" errorplus="0.4">2.7</age>
       <planet>
-				<name>PH-1 A(ab) b</name>
-				<name>PH-1 b</name>
-				<name>KIC 4862625 A(ab) b</name>
-				<name>Planet Hunters 1 b</name>
-				<name>Kepler-64 b</name>
-				<name>Kepler-64 A(ab) b</name>
-				<name>KIC 4862625 b</name>
-				<list>Confirmed planets</list>
-				<radius>0.5631852</radius>
-				<period>100.506</period>
-				<semimajoraxis>1</semimajoraxis>
-				<eccentricity>0.0539</eccentricity>
-				<inclination>90.022</inclination>
-				<transittime errorminus="0.11" errorplus="0.11" unit="BJD">2455074.71</transittime>
-				<description>PH 1 b is a circumbinary planet in a quadruple star system. It is orbiting a double star and there is a second pair of stars at approximately 1000 AU. Citizen scientists discovered this planet by looking at many light curves using the online tool at planethunters.org.</description>
-				<discoverymethod>transit</discoverymethod>
-				<lastupdate>12/10/15</lastupdate>
-				<discoveryyear>2012</discoveryyear>
-				<image>PH1</image>
-				<imagedescription>An artist's conception of the planet in a four-star system. 
-		
-	Credit: Image by Haven Giguere/Yale.</imagedescription>
-				<list>Planets in binary systems, P-type</list>
-				<istransiting>1</istransiting>
-			</planet>
-		</binary>
-	</binary>
-	<videolink>http://youtu.be/QSOdlfHwR6k</videolink>
-	<constellation>Cygnus</constellation>
+          <name>24 Sex b</name>
+          <name>24 Sextantis b</name>
+          <name>HD 90043 b</name>
+          <name>TYC 4905-1374-1 b</name>
+          <name>HIP 50887 b</name>
+          <name>Gaia DR2 3830897080395058048 b</name>
+          <list>Confirmed planets</list>
+          <mass errorminus="0.38" errorplus="0.26" type="msini">1.99</mass>
+          <period errorminus="4.5" errorplus="2.1">452.8</period>
+          <semimajoraxis errorminus="0.009" errorplus="0.004">1.333</semimajoraxis>
+          <eccentricity errorminus="0.06" errorplus="0.14">0.09</eccentricity>
+          <periastron errorminus="165.4" errorplus="277.9">9.2</periastron>
+          <periastrontime errorminus="172.3" errorplus="67.3">2454762</periastrontime>
+          <description>24 Sextantis is located in the constellation of Sextans. The two planets in the system are in a 2:1 mean motion resonance.</description>
+          <discoverymethod>RV</discoverymethod>
+          <lastupdate>15/09/23</lastupdate>
+          <discoveryyear>2010</discoveryyear>
+      </planet>
+      <planet>
+          <name>24 Sex c</name>
+          <name>24 Sextantis c</name>
+          <name>TYC 4905-1374-1 c</name>
+          <name>HIP 50887 c</name>
+          <name>Gaia DR2 3830897080395058048 c</name>
+          <name>HD 90043 c</name>
+          <list>Confirmed planets</list>
+          <mass errorminus="0.22" errorplus="0.35" type="msini">0.86</mass>
+          <period errorminus="13.8" errorplus="32.4">883.0</period>
+          <semimajoraxis errorminus="0.02" errorplus="0.05">2.08</semimajoraxis>
+          <eccentricity errorminus="0.09" errorplus="0.16">0.29</eccentricity>
+          <periastron errorminus="320.9" errorplus="182.2">220.5</periastron>
+          <periastrontime errorminus="96.5" errorplus="209.9">2454930</periastrontime>
+          <description>24 Sextantis is located in the constellation of Sextans. The two planets in the system are in a 2:1 mean motion resonance.</description>
+          <discoverymethod>RV</discoverymethod>
+          <lastupdate>15/09/23</lastupdate>
+          <discoveryyear>2010</discoveryyear>
+      </planet>
+  </star>
+  <videolink>http://youtu.be/Q-rFK86m6_s</videolink>
+  <constellation>Sextans</constellation>
 </system>
+
 
 
     `;

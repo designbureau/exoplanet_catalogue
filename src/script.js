@@ -1,6 +1,8 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
+import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
 import * as dat from "lil-gui";
 import * as xmljs from "xml-js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -47,9 +49,9 @@ scene.add(directionalLight);
 /**
  * Materials
  */
-const material = new THREE.MeshStandardMaterial();
-material.wireframe = true;
-material.roughness = 0.7;
+const material = new THREE.MeshNormalMaterial();
+// material.wireframe = true;
+// material.roughness = 0.7;
 // gui.add(material, 'metalness').min(0).max(1).step(0.001)
 // gui.add(material, 'roughness').min(0).max(1).step(0.001)
 
@@ -59,9 +61,10 @@ material.roughness = 0.7;
 
 const systemParameters = {};
 systemParameters.distance = 215 * 2;
+systemParameters.speed = 0.001;
+gui.add(systemParameters, "speed").min(0).max(0.1).step(0.001);
 
 let xml = StarSystem();
-
 
 var options = {
   compact: true,
@@ -94,7 +97,10 @@ const generateSystem = () => {
       let semimajoraxis, eccentricity, period, inclination, radius;
 
       planet.hasOwnProperty("radius")
-        ? (radius = parseFloat(planet.radius._text)) : radius = 1;
+        ? (radius = parseFloat(planet.radius._text))
+        : (radius = planet.hasOwnProperty("mass")
+            ? parseFloat(planet.mass._text)
+            : 1);
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
@@ -120,7 +126,6 @@ const generateSystem = () => {
 
       planetMesh.position.x = semimajoraxis;
 
-      // TODO:these need to orbit relative to group center. They should already, but don't appear to.
       allPlanetsArray.push({
         mesh: planetMesh,
         semimajoraxis,
@@ -178,22 +183,26 @@ const generateSystem = () => {
     let binaryArray = [];
     Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
 
-    if(group === null){
+    if (group === null) {
       group = new THREE.Group();
       scene.add(group);
     }
 
     binaryArray.map((binary) => {
-      console.log(binary);
+      // console.log(binary);
 
       binary.hasOwnProperty("star") &&
-        renderStar(binary.star, (binary.hasOwnProperty("separation")? binary.separation._text : 500), group);
+        renderStar(
+          binary.star,
+          binary.hasOwnProperty("separation") ? binary.separation._text : 500,
+          group
+        );
 
-      binary.hasOwnProperty("binary") && renderBinary(binary.binary);
-      
+      //TODO: does this need a group?
+      binary.hasOwnProperty("binary") && renderBinary(binary.binary, group);
+
       //render planets
       binary.hasOwnProperty("planet") && renderPlanet(binary.planet, group);
-
     });
   };
 
@@ -243,7 +252,7 @@ const camera = new THREE.PerspectiveCamera(
   45,
   sizes.width / sizes.height,
   0.1,
-  4000
+  10000
 );
 camera.position.x = 0;
 camera.position.y = 0;
@@ -251,11 +260,28 @@ camera.position.z = 500;
 
 scene.add(camera);
 
+const controlParams = {};
+controlParams.orbit = true;
+
 // Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+let controls = new OrbitControls(camera, canvas);
 // controls.enablePan = true;
 // controls.screenSpacePanning = true;
+
+const toggleControl = () => {
+  if (controlParams.orbit === true) {
+    controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+  } else {
+    controls = new FlyControls(camera, canvas);
+    controls.movementSpeed = 10;
+    controls.rollSpeed = 0.025;
+    controls.autoForward = false;
+    controls.dragToLook = true;
+  }
+};
+
+gui.add(controlParams, "orbit").name("Orbit Control").onChange(toggleControl);
 
 /**
  * Renderer
@@ -283,8 +309,8 @@ const params = {
   trails: false,
 };
 
-gui.add(afterimagePass.uniforms["damp"], "value", 0.5, 1).step(0.001);
 gui.add(params, "trails");
+gui.add(afterimagePass.uniforms["damp"], "value", 0.5, 1).step(0.001);
 
 /**
  * Animate
@@ -294,20 +320,20 @@ const clock = new THREE.Clock();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
-  // Update controls
-  controls.update();
+  const delta = clock.getDelta();
 
   allPlanetsArray.map((planet) => {
     planet.mesh.position.x = -(
-      Math.sin(elapsedTime * (planet.period * 0.05)) * planet.semimajoraxis
+      Math.sin(elapsedTime * (planet.period * systemParameters.speed)) *
+      planet.semimajoraxis
     );
 
     planet.mesh.position.y =
-      Math.cos(elapsedTime * (planet.period * 0.05)) *
+      Math.cos(elapsedTime * (planet.period * systemParameters.speed)) *
       (Math.PI * planet.inclination);
 
     planet.mesh.position.z =
-      Math.cos(elapsedTime * planet.period * 0.05) *
+      Math.cos(elapsedTime * planet.period * systemParameters.speed) *
       (planet.semimajoraxis + planet.eccentricity);
   });
 
@@ -318,6 +344,9 @@ const tick = () => {
   } else {
     renderer.render(scene, camera);
   }
+
+  // Update controls
+  controls.update(elapsedTime * 0.01);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
