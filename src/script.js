@@ -178,7 +178,9 @@ const generateSystem = () => {
 
     binaryArray.map((binary) => {
       console.log(binary);
-      renderStar(binary.star, binary.separation._text, group);
+
+      binary.hasOwnProperty("star") &&
+        renderStar(binary.star, binary.separation._text, group);
 
       binary.hasOwnProperty("binary") && renderBinary(binary.binary);
     });
