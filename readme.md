@@ -1,4 +1,4 @@
-# Three.js Journey
+# Three.js Exoplanet Catalogue
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
