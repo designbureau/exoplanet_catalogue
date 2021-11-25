@@ -9,7 +9,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
 import StarSystem from "./StarSystem";
-
+import generateSystem from "./GenerateSystem";
 /**
  * Base
  */
@@ -50,7 +50,7 @@ scene.add(directionalLight);
  * Materials
  */
 const material = new THREE.MeshNormalMaterial();
-// material.wireframe = true;
+ material.wireframe = true;
 // material.roughness = 0.7;
 // gui.add(material, 'metalness').min(0).max(1).step(0.001)
 // gui.add(material, 'roughness').min(0).max(1).step(0.001)
@@ -75,152 +75,11 @@ var system = xmljs.xml2js(xml, options);
 
 console.log(system);
 
-//jupiter:earth radius = 11.209
-//jupiter:earth mass = 318
-//au:sol radius/mass/distance
-//jupiter:sol radius = 11
 
 let planets = [];
 let allPlanetsArray = [];
-const jupiterMass = 11;
 
-const generateSystem = () => {
-  /**
-   * Planet Renderer
-   */
-  const renderPlanet = (planet, starGroup) => {
-    let planetsArray = [];
-    Array.isArray(planet) ? (planetsArray = planet) : planetsArray.push(planet);
-
-    // console.log(planets);
-    planetsArray.map((planet, i) => {
-      let semimajoraxis, eccentricity, period, inclination, radius;
-
-      planet.hasOwnProperty("radius")
-        ? (radius = parseFloat(planet.radius._text))
-        : (radius = planet.hasOwnProperty("mass")
-            ? parseFloat(planet.mass._text)
-            : 1);
-
-      const planetMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 32, 32),
-        material
-      );
-
-      planet.hasOwnProperty("semimajoraxis")
-        ? (semimajoraxis =
-            parseFloat(planet.semimajoraxis._text) * systemParameters.distance)
-        : (semimajoraxis = 0.25 * systemParameters.distance + i * 100);
-
-      planet.hasOwnProperty("eccentricity")
-        ? (eccentricity = parseFloat(planet.eccentricity._text))
-        : (eccentricity = 0);
-
-      planet.hasOwnProperty("period")
-        ? (period = parseFloat(planet.period._text))
-        : (period = 0.1);
-
-      planet.hasOwnProperty("inclination")
-        ? (inclination = parseFloat(planet.inclination._text))
-        : (inclination = 0);
-
-      planetMesh.position.x = semimajoraxis;
-
-      allPlanetsArray.push({
-        mesh: planetMesh,
-        semimajoraxis,
-        period,
-        eccentricity,
-        inclination,
-      });
-
-      if (starGroup === null) {
-        scene.add(planetMesh);
-      } else {
-        starGroup.add(planetMesh);
-      }
-    });
-  };
-
-  /**
-   * Star Renderer
-   */
-  const renderStar = (star, separation = 0, binaryGroup = null) => {
-    let starsArray = [];
-    Array.isArray(star) ? (starsArray = star) : starsArray.push(star);
-
-    const starsArraySize = starsArray.length;
-    starsArray.map((star, i) => {
-      let starRadius;
-      star.hasOwnProperty("radius")
-        ? (starRadius = parseFloat(star.radius._text))
-        : (starRadius = 1);
-      const starMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(starRadius * jupiterMass, 32, 32),
-        material
-      );
-
-      let starGroup = new THREE.Group();
-
-      starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
-      starGroup.add(starMesh);
-
-      if (binaryGroup == null) {
-        scene.add(starGroup);
-      } else {
-        binaryGroup.add(starGroup);
-      }
-
-      //render planets
-      star.hasOwnProperty("planet") && renderPlanet(star.planet, starGroup);
-    });
-  };
-
-  /**
-   * Binary Renderer
-   */
-  const renderBinary = (binary, group = null) => {
-    let binaryArray = [];
-    Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
-
-    if (group === null) {
-      group = new THREE.Group();
-      scene.add(group);
-    }
-
-    binaryArray.map((binary) => {
-      // console.log(binary);
-
-      binary.hasOwnProperty("star") &&
-        renderStar(
-          binary.star,
-          binary.hasOwnProperty("separation") ? binary.separation._text : 500,
-          group
-        );
-
-      //TODO: does this need a group?
-      binary.hasOwnProperty("binary") && renderBinary(binary.binary, group);
-
-      //render planets
-      binary.hasOwnProperty("planet") && renderPlanet(binary.planet, group);
-    });
-  };
-
-  /**
-   * Iterator
-   */
-
-  //contains binary
-  system.system.hasOwnProperty("binary") && renderBinary(system.system.binary);
-
-  //contains star
-  system.system.hasOwnProperty("star") && renderStar(system.system.star);
-
-  //contains planet
-  system.system.hasOwnProperty("planet") && renderPlanet(system.system.planet);
-};
-
-generateSystem();
+generateSystem(system, systemParameters, allPlanetsArray, scene, material );
 
 /**
  * Sizes
@@ -252,7 +111,7 @@ const camera = new THREE.PerspectiveCamera(
   45,
   sizes.width / sizes.height,
   0.1,
-  10000
+  100000
 );
 camera.position.x = 0;
 camera.position.y = 0;

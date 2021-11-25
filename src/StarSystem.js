@@ -1,48 +1,85 @@
 const StarSystem = () => {
   return `
-  <system>
-  <name>WASP-185</name>
-  <rightascension>14 16 14.3136</rightascension>
-  <declination>-19 32 32.2084</declination>
-  <distance errorminus="6.00" errorplus="6.00">275.00</distance>
-  <star>
-      <name>WASP-185</name>
-      <name>Gaia DR2 6284007337003799552</name>
-      <name>TYC 6147-1306-1</name>
-      <radius errorminus="0.08" errorplus="0.08">1.50</radius>
-      <magJ errorminus="0.025" errorplus="0.025">9.873</magJ>
-      <magH errorminus="0.024" errorplus="0.024">9.601</magH>
-      <magK errorminus="0.017" errorplus="0.017">9.505</magK>
-      <magB errorminus="0.012" errorplus="0.012">11.639</magB>
-      <magV errorminus="0.005" errorplus="0.005">11.019</magV>
-      <mass errorminus="0.06" errorplus="0.06">1.12</mass>
-      <temperature errorminus="100.00" errorplus="100.00">5900.00</temperature>
-      <metallicity errorminus="0.060" errorplus="0.060">-0.020</metallicity>
-      <spectraltype>G0V</spectraltype>
-      <planet>
-          <name>WASP-185 b</name>
-          <name>Gaia DR2 6284007337003799552 b</name>
-          <name>TYC 6147-1306-1 b</name>
-          <semimajoraxis errorminus="0.001700" errorplus="0.001700">0.090400</semimajoraxis>
-          <eccentricity errorminus="0.040000" errorplus="0.040000">0.240000</eccentricity>
-          <periastron errorminus="7.0000" errorplus="7.0000">-42.0000</periastron>
-          <inclination errorminus="0.300" errorplus="0.300">86.800</inclination>
-          <period errorminus="0.00002000" errorplus="0.00002000">9.38755000</period>
-          <description>This planet was discovered by Hellier et al. 2019. This was a ground based discovery. The parameters listed here are those reported by Hellier et al. 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
-          <mass errorminus="0.06000" errorplus="0.06000">0.98000</mass>
-          <radius errorminus="0.080" errorplus="0.080">1.250</radius>
-          <temperature errorminus="35" errorplus="35">1160</temperature>
-          <discoverymethod>transit</discoverymethod>
-          <istransiting>1</istransiting>
-          <discoveryyear>2019</discoveryyear>
-          <list>Confirmed planets</list>
-          <lastupdate>19/10/10</lastupdate>
-          <transittime errorminus="0.002000" errorplus="0.002000">2456935.982000</transittime>
-      </planet>
-  </star>
-  <constellation>Virgo</constellation>
+<system>
+	<name>Kepler-1542</name>
+	<name>KOI-4032</name>
+	<name>KIC 7100673</name>
+	<distance errorminus="3.9771" errorplus="3.9771">403.73</distance>
+	<rightascension>19 02 54.8381</rightascension>
+	<declination>+42 39 16.3106</declination>
+	<star>
+		<name>Kepler-1542</name>
+		<name>KOI-4032</name>
+		<name>KIC 7100673</name>
+		<name>2MASS J19025483+4239163</name>
+		<name>Gaia DR2 2105526799680172032</name>
+		<temperature errorminus="63.3" errorplus="63.2">5564.0</temperature>
+		<mass errorminus="0.03" errorplus="0.03">0.94</mass>
+		<radius errorminus="0.09" errorplus="0.13">0.99</radius>
+		<metallicity errorminus="0.08" errorplus="0.08">0.06</metallicity>
+		<planet>
+			<name>Kepler-1542 b</name>
+			<name>KOI-4032 b</name>
+			<name>KOI-4032.01</name>
+			<name>KIC 7100673 b</name>
+			<name>Gaia DR2 2105526799680172032 b</name>
+			<discoverymethod>transit</discoverymethod>
+			<list>Confirmed planets</list>
+			<discoveryyear>2016</discoveryyear>
+			<lastupdate>16/05/10</lastupdate>
+			<istransiting>1</istransiting>
+			<description>This planet was discovered by the NASA Kepler spacecraft and is part of the May 10th 2016 data release. Although not many details are known about this particular system yet, it has a very low probability of being a false positive.</description>
+			<period errorminus="0.000016330" errorplus="0.000016330">3.951168820</period>
+			<radius errorminus="0.007" errorplus="0.010">0.068</radius>
+		</planet>
+		<planet>
+			<name>Kepler-1542 c</name>
+			<name>KOI-4032 c</name>
+			<name>KOI-4032.02</name>
+			<name>KIC 7100673 c</name>
+			<name>Gaia DR2 2105526799680172032 c</name>
+			<discoverymethod>transit</discoverymethod>
+			<list>Confirmed planets</list>
+			<discoveryyear>2016</discoveryyear>
+			<lastupdate>16/05/10</lastupdate>
+			<istransiting>1</istransiting>
+			<description>This planet was discovered by the NASA Kepler spacecraft and is part of the May 10th 2016 data release. Although not many details are known about this particular system yet, it has a very low probability of being a false positive.</description>
+			<period errorminus="0.000014720" errorplus="0.000014720">2.892230210</period>
+			<radius errorminus="0.005" errorplus="0.008">0.058</radius>
+		</planet>
+		<planet>
+			<name>Kepler-1542 d</name>
+			<name>KOI-4032 d</name>
+			<name>KOI-4032.03</name>
+			<name>KIC 7100673 d</name>
+			<name>Gaia DR2 2105526799680172032 d</name>
+			<discoverymethod>transit</discoverymethod>
+			<list>Confirmed planets</list>
+			<discoveryyear>2016</discoveryyear>
+			<lastupdate>16/05/10</lastupdate>
+			<istransiting>1</istransiting>
+			<description>This planet was discovered by the NASA Kepler spacecraft and is part of the May 10th 2016 data release. Although not many details are known about this particular system yet, it has a very low probability of being a false positive.</description>
+			<period errorminus="0.000022600" errorplus="0.000022600">5.992737380</period>
+			<radius errorminus="0.008" errorplus="0.011">0.078</radius>
+		</planet>
+		<planet>
+			<name>Kepler-1542 e</name>
+			<name>KOI-4032 e</name>
+			<name>KOI-4032.04</name>
+			<name>KIC 7100673 e</name>
+			<name>Gaia DR2 2105526799680172032 e</name>
+			<discoverymethod>transit</discoverymethod>
+			<list>Confirmed planets</list>
+			<discoveryyear>2016</discoveryyear>
+			<lastupdate>16/05/10</lastupdate>
+			<istransiting>1</istransiting>
+			<description>This planet was discovered by the NASA Kepler spacecraft and is part of the May 10th 2016 data release. Although not many details are known about this particular system yet, it has a very low probability of being a false positive.</description>
+			<period errorminus="0.000024090" errorplus="0.000024090">5.101157560</period>
+			<radius errorminus="0.007" errorplus="0.009">0.068</radius>
+		</planet>
+	</star>
+	<constellation>Lyra</constellation>
 </system>
-
 
     `;
 };
