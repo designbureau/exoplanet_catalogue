@@ -1,75 +1,47 @@
 const StarSystem = () => {
   return `
   <system>
-  <name>24 Sex</name>
-  <rightascension>10 23 28.3693</rightascension>
-  <declination>-00 54 08.0771</declination>
-  <distance errorminus="4.9" errorplus="4.9">74.8</distance>
+  <name>WASP-185</name>
+  <rightascension>14 16 14.3136</rightascension>
+  <declination>-19 32 32.2084</declination>
+  <distance errorminus="6.00" errorplus="6.00">275.00</distance>
   <star>
-      <name>24 Sex</name>
-      <name>24 Sextantis</name>
-      <name>HD 90043</name>
-      <name>HIP 50887</name>
-      <name>TYC 4905-1374-1</name>
-      <name>SAO 137532</name>
-      <name>BD-00 2332</name>
-      <name>2MASS J10232836-0054079</name>
-      <name>Gaia DR2 3830897080395058048</name>
-      <mass errorminus="0.08" errorplus="0.08">1.54</mass>
-      <radius errorminus="0.08" errorplus="0.08">4.9</radius>
-      <magV>7.38</magV>
-      <magB errorminus="0.015" errorplus="0.015">7.400</magB>
-      <magR errorminus="0.34" errorplus="0.34">6.41</magR>
-      <magJ errorminus="0.338" errorplus="0.338">5.292</magJ>
-      <magH errorminus="0.076" errorplus="0.076">4.486</magH>
-      <magK errorminus="0.016" errorplus="0.016">4.285</magK>
-      <temperature errorminus="44" errorplus="44">5098</temperature>
-      <metallicity errorminus="0.04" errorplus="0.04">-0.03</metallicity>
-      <spectraltype>G5</spectraltype>
-      <age errorminus="0.4" errorplus="0.4">2.7</age>
+      <name>WASP-185</name>
+      <name>Gaia DR2 6284007337003799552</name>
+      <name>TYC 6147-1306-1</name>
+      <radius errorminus="0.08" errorplus="0.08">1.50</radius>
+      <magJ errorminus="0.025" errorplus="0.025">9.873</magJ>
+      <magH errorminus="0.024" errorplus="0.024">9.601</magH>
+      <magK errorminus="0.017" errorplus="0.017">9.505</magK>
+      <magB errorminus="0.012" errorplus="0.012">11.639</magB>
+      <magV errorminus="0.005" errorplus="0.005">11.019</magV>
+      <mass errorminus="0.06" errorplus="0.06">1.12</mass>
+      <temperature errorminus="100.00" errorplus="100.00">5900.00</temperature>
+      <metallicity errorminus="0.060" errorplus="0.060">-0.020</metallicity>
+      <spectraltype>G0V</spectraltype>
       <planet>
-          <name>24 Sex b</name>
-          <name>24 Sextantis b</name>
-          <name>HD 90043 b</name>
-          <name>TYC 4905-1374-1 b</name>
-          <name>HIP 50887 b</name>
-          <name>Gaia DR2 3830897080395058048 b</name>
+          <name>WASP-185 b</name>
+          <name>Gaia DR2 6284007337003799552 b</name>
+          <name>TYC 6147-1306-1 b</name>
+          <semimajoraxis errorminus="0.001700" errorplus="0.001700">0.090400</semimajoraxis>
+          <eccentricity errorminus="0.040000" errorplus="0.040000">0.240000</eccentricity>
+          <periastron errorminus="7.0000" errorplus="7.0000">-42.0000</periastron>
+          <inclination errorminus="0.300" errorplus="0.300">86.800</inclination>
+          <period errorminus="0.00002000" errorplus="0.00002000">9.38755000</period>
+          <description>This planet was discovered by Hellier et al. 2019. This was a ground based discovery. The parameters listed here are those reported by Hellier et al. 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+          <mass errorminus="0.06000" errorplus="0.06000">0.98000</mass>
+          <radius errorminus="0.080" errorplus="0.080">1.250</radius>
+          <temperature errorminus="35" errorplus="35">1160</temperature>
+          <discoverymethod>transit</discoverymethod>
+          <istransiting>1</istransiting>
+          <discoveryyear>2019</discoveryyear>
           <list>Confirmed planets</list>
-          <mass errorminus="0.38" errorplus="0.26" type="msini">1.99</mass>
-          <period errorminus="4.5" errorplus="2.1">452.8</period>
-          <semimajoraxis errorminus="0.009" errorplus="0.004">1.333</semimajoraxis>
-          <eccentricity errorminus="0.06" errorplus="0.14">0.09</eccentricity>
-          <periastron errorminus="165.4" errorplus="277.9">9.2</periastron>
-          <periastrontime errorminus="172.3" errorplus="67.3">2454762</periastrontime>
-          <description>24 Sextantis is located in the constellation of Sextans. The two planets in the system are in a 2:1 mean motion resonance.</description>
-          <discoverymethod>RV</discoverymethod>
-          <lastupdate>15/09/23</lastupdate>
-          <discoveryyear>2010</discoveryyear>
-      </planet>
-      <planet>
-          <name>24 Sex c</name>
-          <name>24 Sextantis c</name>
-          <name>TYC 4905-1374-1 c</name>
-          <name>HIP 50887 c</name>
-          <name>Gaia DR2 3830897080395058048 c</name>
-          <name>HD 90043 c</name>
-          <list>Confirmed planets</list>
-          <mass errorminus="0.22" errorplus="0.35" type="msini">0.86</mass>
-          <period errorminus="13.8" errorplus="32.4">883.0</period>
-          <semimajoraxis errorminus="0.02" errorplus="0.05">2.08</semimajoraxis>
-          <eccentricity errorminus="0.09" errorplus="0.16">0.29</eccentricity>
-          <periastron errorminus="320.9" errorplus="182.2">220.5</periastron>
-          <periastrontime errorminus="96.5" errorplus="209.9">2454930</periastrontime>
-          <description>24 Sextantis is located in the constellation of Sextans. The two planets in the system are in a 2:1 mean motion resonance.</description>
-          <discoverymethod>RV</discoverymethod>
-          <lastupdate>15/09/23</lastupdate>
-          <discoveryyear>2010</discoveryyear>
+          <lastupdate>19/10/10</lastupdate>
+          <transittime errorminus="0.002000" errorplus="0.002000">2456935.982000</transittime>
       </planet>
   </star>
-  <videolink>http://youtu.be/Q-rFK86m6_s</videolink>
-  <constellation>Sextans</constellation>
+  <constellation>Virgo</constellation>
 </system>
-
 
 
     `;
