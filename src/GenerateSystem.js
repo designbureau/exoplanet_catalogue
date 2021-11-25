@@ -1,12 +1,16 @@
 import * as THREE from "three";
 
-const generateSystem = (system, systemParameters, allPlanetsArray, scene, material) => {
-
-
+const generateSystem = (
+  system,
+  systemParameters,
+  allPlanetsArray,
+  scene,
+  material
+) => {
   //jupiter:earth radius = 11.209
-//jupiter:earth mass = 318
-//au:sol radius/mass/distance
-//jupiter:sol radius = 11
+  //jupiter:earth mass = 318
+  //au:sol radius/mass/distance
+  //jupiter:sol radius = 11
 
   const jupiterMass = 11;
 
@@ -21,15 +25,20 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
     planetsArray.map((planet, i) => {
       let semimajoraxis, eccentricity, period, inclination, radius, name;
 
-      planet.hasOwnProperty("name")? name = (Array.isArray(planet.name)? planet.name[0]._text : planet.name._text) : "planet-" + i;
+      planet.hasOwnProperty("name")
+        ? (name = Array.isArray(planet.name)
+            ? planet.name[0]._text
+            : planet.name._text)
+        : "planet-" + i;
       // console.log(name);
 
       planet.hasOwnProperty("radius")
         ? (radius = parseFloat(planet.radius._text))
         : (radius = planet.hasOwnProperty("mass")
-            ? planet.mass.hasOwnProperty("_text")? parseFloat(planet.mass._text) : 1
+            ? planet.mass.hasOwnProperty("_text")
+              ? parseFloat(planet.mass._text)
+              : 1
             : 1);
-  
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
@@ -61,31 +70,34 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
       // planetMesh.name = "planet-" + i;
       planetMesh.name = name;
 
-
       //Orbits
       const curve = new THREE.EllipseCurve(
-        0,  0,            // ax, aY
-        (Math.cos(eccentricity) + semimajoraxis), (Math.sin(eccentricity) + semimajoraxis),  // xRadius, yRadius
-        0,  2 * Math.PI,  // aStartAngle, aEndAngle
-        false,            // aClockwise
-        inclination      // aRotation
+        0,
+        0, // ax, aY
+        Math.cos(eccentricity) + semimajoraxis,
+        Math.sin(eccentricity) + semimajoraxis, // xRadius, yRadius
+        0,
+        2 * Math.PI, // aStartAngle, aEndAngle
+        false, // aClockwise
+        0 // aRotation
       );
 
-      
-      const points = curve.getPoints( 100 );
-      const geometry = new THREE.BufferGeometry().setFromPoints( points );
-      const orbitMaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
+      const points = curve.getPoints(100);
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
       orbitMaterial.transparent = true;
-      orbitMaterial.opacity = 0.25
+      orbitMaterial.opacity = 0.25;
       // Create the final object to add to the scene
-      const orbitEllipse = new THREE.Line( geometry, orbitMaterial );
+      const orbitEllipse = new THREE.Line(geometry, orbitMaterial);
 
-      //  orbitEllipse.rotation.x = Math.PI * 0.5;
+      // orbitEllipse.rotation.y = Math.PI * eccentricity;
+      // orbitEllipse.rotation.x = inclination;
 
+      // orbitEllipse.rotation.z = Math.PI * 0.5;
 
       allPlanetsArray.push({
         mesh: planetMesh,
-        orbit:orbitEllipse,
+        orbit: orbitEllipse,
         semimajoraxis,
         period,
         eccentricity,
@@ -141,17 +153,14 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
     let binaryArray = [];
     Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
 
-
     let binaryGroup = new THREE.Group();
 
     if (group === null) {
       group = binaryGroup;
-    }
-    else{
+    } else {
       binaryGroup.position.x = parseFloat(separation) * 215;
     }
     scene.add(group);
-
 
     binaryArray.map((binary) => {
       // console.log(binary);
@@ -183,7 +192,6 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
 
   //contains planet
   system.system.hasOwnProperty("planet") && renderPlanet(system.system.planet);
-
 };
 
 export default generateSystem;

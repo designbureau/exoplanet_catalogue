@@ -40,7 +40,7 @@ const StarSystem = () => {
 			<inclination errorminus="0.27" errorplus="0.22">89.65</inclination>
 			<period errorminus="0.0000075" errorplus="0.0000075">1.5108739</period>
 			<semimajoraxis errorminus="0.000000057" errorplus="0.000000057">0.01154775</semimajoraxis>
-			<eccentricity errorminus="0.00304" errorplus="0.00304">0.00622</eccentricity>
+			<eccentricity errorminus="0.00304" errorplus="0.00304">3</eccentricity>
 			<periastron errorminus="34.24" errorplus="34.24">336.86</periastron>
 			<temperature errorminus="7.7" errorplus="7.7">400.1</temperature>
 			<mass errorminus="0.0000450" errorplus="0.000485">0.003200</mass>

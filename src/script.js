@@ -50,7 +50,7 @@ scene.add(directionalLight);
  * Materials
  */
 const material = new THREE.MeshNormalMaterial();
- material.wireframe = true;
+material.wireframe = true;
 // material.roughness = 0.7;
 // gui.add(material, 'metalness').min(0).max(1).step(0.001)
 // gui.add(material, 'roughness').min(0).max(1).step(0.001)
@@ -61,7 +61,7 @@ const material = new THREE.MeshNormalMaterial();
 
 const systemParameters = {};
 systemParameters.distance = 215 * 2;
-systemParameters.speed = 10;
+systemParameters.speed = 0.01;
 gui.add(systemParameters, "speed").min(0).max(0.1).step(0.001);
 
 let xml = StarSystem();
@@ -75,11 +75,10 @@ var system = xmljs.xml2js(xml, options);
 
 console.log(system);
 
-
 let planets = [];
 let allPlanetsArray = [];
 
-generateSystem(system, systemParameters, allPlanetsArray, scene, material );
+generateSystem(system, systemParameters, allPlanetsArray, scene, material);
 
 /**
  * Sizes
@@ -182,34 +181,25 @@ const tick = () => {
   const delta = clock.getDelta();
 
   allPlanetsArray.map((planet) => {
-
     //This is wrong
-    planet.mesh.position.x =
-      Math.cos(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) * planet.semimajoraxis ;
+    // planet.mesh.position.x =
+    //   Math.cos(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) * planet.semimajoraxis ;
 
-      planet.mesh.position.y =
-      Math.sin(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) *
-      planet.semimajoraxis;
+    //   planet.mesh.position.y =
+    //   Math.sin(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) *
+    //   planet.semimajoraxis;
+
+    planet.mesh.position.x =
+      (Math.cos(planet.eccentricity) + planet.semimajoraxis) *
+      Math.cos(elapsedTime * planet.period * systemParameters.speed);
+
+    planet.mesh.position.y =
+      (Math.sin(planet.eccentricity) + planet.semimajoraxis) *
+      Math.sin(elapsedTime * planet.period * systemParameters.speed);
 
     // planet.mesh.position.z =
-    // Math.sin(elapsedTime * planet.period * systemParameters.speed) *
-    // planet.semimajoraxis + planet.eccentricity;
-
-    // planet.orbit.position.z =  (Math.sin(elapsedTime * planet.period * systemParameters.speed) * planet.semimajoraxis - planet.eccentricity) * 0.5;
- 
-
-
-  //  planet.orbit.position.z = Math.PI * Math.sin(elapsedTime * systemParameters.speed) - planet.inclination;
-
-    // planet.orbit.position.x = Math.PI * Math.cos(elapsedTime * systemParameters.speed) * 0.5;
-    // (Math.cos(elapsedTime * (planet.period * systemParameters.speed)) * planet.semimajoraxis + planet.eccentricity) * 0.5;
-
-
-    // planet.orbit.position.z =
-    //   - (Math.sin(elapsedTime * planet.period * systemParameters.speed) *
-    //   (planet.semimajoraxis + planet.eccentricity)) * 0.5;
-
-    
+    //   Math.sin(planet.inclination) *
+    //   Math.sin(elapsedTime * planet.period * systemParameters.speed);
   });
 
   // Render
@@ -221,8 +211,6 @@ const tick = () => {
   }
 
   // Update controls
-
-
 
   controls.update(elapsedTime * 0.005);
 
