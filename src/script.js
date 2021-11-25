@@ -50,7 +50,7 @@ scene.add(directionalLight);
  * Materials
  */
 const material = new THREE.MeshNormalMaterial();
-material.wireframe = true;
+// material.wireframe = true;
 // material.roughness = 0.7;
 // gui.add(material, 'metalness').min(0).max(1).step(0.001)
 // gui.add(material, 'roughness').min(0).max(1).step(0.001)
@@ -114,7 +114,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.x = 0;
 camera.position.y = 0;
-camera.position.z = 500;
+camera.position.z = 100;
 
 scene.add(camera);
 
@@ -132,7 +132,7 @@ const toggleControl = () => {
     controls.enableDamping = true;
   } else {
     controls = new FlyControls(camera, canvas);
-    controls.movementSpeed = 10;
+    controls.movementSpeed = 0.5;
     controls.rollSpeed = 0.025;
     controls.autoForward = false;
     controls.dragToLook = true;
@@ -181,14 +181,6 @@ const tick = () => {
   const delta = clock.getDelta();
 
   allPlanetsArray.map((planet) => {
-    //This is wrong
-    // planet.mesh.position.x =
-    //   Math.cos(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) * planet.semimajoraxis ;
-
-    //   planet.mesh.position.y =
-    //   Math.sin(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) *
-    //   planet.semimajoraxis;
-
     planet.mesh.position.x =
       (Math.cos(planet.eccentricity) + planet.semimajoraxis) *
       Math.cos(elapsedTime * planet.period * systemParameters.speed);
@@ -200,6 +192,10 @@ const tick = () => {
     // planet.mesh.position.z =
     //   Math.sin(planet.inclination) *
     //   Math.sin(elapsedTime * planet.period * systemParameters.speed);
+
+    // planet.mesh.position.z =
+    //   Math.cos(planet.inclination) *
+    //   Math.cos(elapsedTime * planet.period * systemParameters.speed);
   });
 
   // Render
@@ -212,7 +208,7 @@ const tick = () => {
 
   // Update controls
 
-  controls.update(elapsedTime * 0.005);
+  controls.update(elapsedTime * 0.01);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);

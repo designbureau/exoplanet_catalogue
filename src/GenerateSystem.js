@@ -21,6 +21,17 @@ const generateSystem = (
     let planetsArray = [];
     Array.isArray(planet) ? (planetsArray = planet) : planetsArray.push(planet);
 
+    // let orbitsGroup = new THREE.Group();
+
+    // if (starGroup === null) {
+    //   scene.add(orbitsGroup);
+    // } else {
+    //   starGroup.add(orbitsGroup);
+    // }
+    // orbitsGroup.rotation.x = Math.PI * 0.5;
+    // orbitsGroup.rotation.y = Math.PI * 0.5;
+    // orbitsGroup.rotation.z = Math.PI * 0.5;
+
     // console.log(planets);
     planetsArray.map((planet, i) => {
       let semimajoraxis, eccentricity, period, inclination, radius, name;
@@ -90,14 +101,18 @@ const generateSystem = (
       // Create the final object to add to the scene
       const orbitEllipse = new THREE.Line(geometry, orbitMaterial);
 
-      // orbitEllipse.rotation.y = Math.PI * eccentricity;
+      // orbitEllipse.rotation.x = inclination;
+      // orbitEllipse.rotation.y = Math.sin(inclination);
+      // orbitEllipse.rotation.z = Math.cos(inclination);
+
       // orbitEllipse.rotation.x = inclination;
 
-      // orbitEllipse.rotation.z = Math.PI * 0.5;
+      let orbitsGroup = new THREE.Group();
+      orbitsGroup.add(planetMesh, orbitEllipse);
+      orbitsGroup.rotation.x = inclination;
 
       allPlanetsArray.push({
         mesh: planetMesh,
-        orbit: orbitEllipse,
         semimajoraxis,
         period,
         eccentricity,
@@ -105,9 +120,9 @@ const generateSystem = (
       });
 
       if (starGroup === null) {
-        scene.add(planetMesh, orbitEllipse);
+        scene.add(orbitsGroup);
       } else {
-        starGroup.add(planetMesh, orbitEllipse);
+        starGroup.add(orbitsGroup);
       }
     });
   };
