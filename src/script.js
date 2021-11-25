@@ -61,7 +61,7 @@ const material = new THREE.MeshNormalMaterial();
 
 const systemParameters = {};
 systemParameters.distance = 215 * 2;
-systemParameters.speed = 0.001;
+systemParameters.speed = 10;
 gui.add(systemParameters, "speed").min(0).max(0.1).step(0.001);
 
 let xml = StarSystem();
@@ -182,18 +182,34 @@ const tick = () => {
   const delta = clock.getDelta();
 
   allPlanetsArray.map((planet) => {
-    planet.mesh.position.x = -(
-      Math.sin(elapsedTime * (planet.period * systemParameters.speed)) *
-      planet.semimajoraxis
-    );
 
-    planet.mesh.position.y =
-      Math.cos(elapsedTime * (planet.period * systemParameters.speed)) *
-      (Math.PI * planet.inclination);
+    //This is wrong
+    planet.mesh.position.x =
+      Math.cos(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) * planet.semimajoraxis ;
 
-    planet.mesh.position.z =
-      Math.cos(elapsedTime * planet.period * systemParameters.speed) *
-      (planet.semimajoraxis + planet.eccentricity);
+      planet.mesh.position.y =
+      Math.sin(elapsedTime * planet.period * systemParameters.speed * planet.eccentricity) *
+      planet.semimajoraxis;
+
+    // planet.mesh.position.z =
+    // Math.sin(elapsedTime * planet.period * systemParameters.speed) *
+    // planet.semimajoraxis + planet.eccentricity;
+
+    // planet.orbit.position.z =  (Math.sin(elapsedTime * planet.period * systemParameters.speed) * planet.semimajoraxis - planet.eccentricity) * 0.5;
+ 
+
+
+  //  planet.orbit.position.z = Math.PI * Math.sin(elapsedTime * systemParameters.speed) - planet.inclination;
+
+    // planet.orbit.position.x = Math.PI * Math.cos(elapsedTime * systemParameters.speed) * 0.5;
+    // (Math.cos(elapsedTime * (planet.period * systemParameters.speed)) * planet.semimajoraxis + planet.eccentricity) * 0.5;
+
+
+    // planet.orbit.position.z =
+    //   - (Math.sin(elapsedTime * planet.period * systemParameters.speed) *
+    //   (planet.semimajoraxis + planet.eccentricity)) * 0.5;
+
+    
   });
 
   // Render
@@ -205,7 +221,10 @@ const tick = () => {
   }
 
   // Update controls
-  controls.update(elapsedTime * 0.01);
+
+
+
+  controls.update(elapsedTime * 0.005);
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);

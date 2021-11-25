@@ -19,13 +19,17 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
 
     // console.log(planets);
     planetsArray.map((planet, i) => {
-      let semimajoraxis, eccentricity, period, inclination, radius;
+      let semimajoraxis, eccentricity, period, inclination, radius, name;
+
+      planet.hasOwnProperty("name")? name = (Array.isArray(planet.name)? planet.name[0]._text : planet.name._text) : "planet-" + i;
+      // console.log(name);
 
       planet.hasOwnProperty("radius")
         ? (radius = parseFloat(planet.radius._text))
         : (radius = planet.hasOwnProperty("mass")
-            ? parseFloat(planet.mass._text)
+            ? planet.mass.hasOwnProperty("_text")? parseFloat(planet.mass._text) : 1
             : 1);
+  
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
@@ -35,7 +39,7 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
       planet.hasOwnProperty("semimajoraxis")
         ? (semimajoraxis =
             parseFloat(planet.semimajoraxis._text) * systemParameters.distance)
-        : (semimajoraxis = 0.25 * systemParameters.distance + i * 100);
+        : (semimajoraxis = 100);
 
       planet.hasOwnProperty("eccentricity")
         ? (eccentricity = parseFloat(planet.eccentricity._text))
@@ -50,36 +54,38 @@ const generateSystem = (system, systemParameters, allPlanetsArray, scene, materi
         : (inclination = 0);
 
       planetMesh.position.x = semimajoraxis;
+      // planetMesh.rotation.y = Math.PI * eccentricity;
 
-
-      const orbitMesh = new THREE.Mesh(
-        new THREE.TorusGeometry(
-          semimajoraxis, 1, 1, 100
-        ),
-        material
-      );
+      // planet.hasOwnProperty("name")? name = planet.name[0]._text : "planet-" + i;
+      // planetMesh.name = name;
+      // planetMesh.name = "planet-" + i;
+      planetMesh.name = name;
 
 
       //Orbits
       const curve = new THREE.EllipseCurve(
         0,  0,            // ax, aY
-        semimajoraxis, semimajoraxis,  // xRadius, yRadius
+        (Math.cos(eccentricity) + semimajoraxis), (Math.sin(eccentricity) + semimajoraxis),  // xRadius, yRadius
         0,  2 * Math.PI,  // aStartAngle, aEndAngle
         false,            // aClockwise
         inclination      // aRotation
       );
+
       
-      const points = curve.getPoints( 50 );
+      const points = curve.getPoints( 100 );
       const geometry = new THREE.BufferGeometry().setFromPoints( points );
-      const orbitMaterial = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+      const orbitMaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
+      orbitMaterial.transparent = true;
+      orbitMaterial.opacity = 0.25
       // Create the final object to add to the scene
       const orbitEllipse = new THREE.Line( geometry, orbitMaterial );
 
-
+      //  orbitEllipse.rotation.x = Math.PI * 0.5;
 
 
       allPlanetsArray.push({
         mesh: planetMesh,
+        orbit:orbitEllipse,
         semimajoraxis,
         period,
         eccentricity,
