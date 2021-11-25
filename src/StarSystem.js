@@ -1,208 +1,117 @@
 const StarSystem = () => {
   return `
   <system>
-	<name>TRAPPIST-1</name>
-	<name>2MASS J23062928-0502285</name>
-	<name>K2-112</name>
-	<name>EPIC 246199087</name>
-	<rightascension>23 06 29.3684052886</rightascension>
-	<declination>-05 02 29.031690445</declination>
-	<distance errorminus="0.019" errorplus="0.019">12.430</distance>
-	<star>
-		<name>TRAPPIST-1</name>
-		<name>2MASS J23062928-0502285</name>
-		<name>K2-112</name>
-		<name>EPIC 246199087</name>
-		<name>Gaia DR2 2635476908753563008</name>
-		<magV errorminus="0.082" errorplus="0.082">18.798</magV>
-		<magR errorminus="0.004" errorplus="0.004">16.401</magR>
-		<magI errorminus="0.002" errorplus="0.002">13.966</magI>
-		<magJ errorminus="0.02" errorplus="0.02">11.35</magJ>
-		<magH errorminus="0.02" errorplus="0.02">10.72</magH>
-		<magK errorminus="0.02" errorplus="0.02">10.30</magK>
-		<spectraltype>M8 V</spectraltype>
-		<temperature errorminus="41" errorplus="41">2516</temperature>
-		<metallicity errorminus="0.08" errorplus="0.08">0.04</metallicity>
-		<radius errorminus="0.003" errorplus="0.003">0.121</radius>
-		<mass errorminus="0.006" errorplus="0.006">0.089</mass>
-		<age errorminus="2.2" errorplus="2.2">7.6</age>
-		<planet>
-			<name>TRAPPIST-1 b</name>
-			<name>2MASS J23062928-0502285 b</name>
-			<name>K2-112 b</name>
-			<name>EPIC 246199087 b</name>
-			<name>Gaia DR2 2635476908753563008 b</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.00058" errorplus="0.00058">2457606.56117</transittime>
-			<impactparameter errorminus="0.078" errorplus="0.092">0.126</impactparameter>
-			<radius errorminus="0.00285" errorplus="0.00277">0.10001</radius>
-			<inclination errorminus="0.27" errorplus="0.22">89.65</inclination>
-			<period errorminus="0.0000075" errorplus="0.0000075">1.5108739</period>
-			<semimajoraxis errorminus="0.000000057" errorplus="0.000000057">0.01154775</semimajoraxis>
-			<eccentricity errorminus="0.00304" errorplus="0.00304">3</eccentricity>
-			<periastron errorminus="34.24" errorplus="34.24">336.86</periastron>
-			<temperature errorminus="7.7" errorplus="7.7">400.1</temperature>
-			<mass errorminus="0.0000450" errorplus="0.000485">0.003200</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2016</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 c</name>
-			<name>2MASS J23062928-0502285 c</name>
-			<name>K2-112 c</name>
-			<name>EPIC 246199087 c</name>
-			<name>Gaia DR2 2635476908753563008 c</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.00064" errorplus="0.00064">2457568.58230</transittime>
-			<impactparameter errorminus="0.084" errorplus="0.076">0.161</impactparameter>
-			<radius errorminus="0.00276" errorplus="0.00267">0.09769</radius>
-			<inclination errorminus="0.17" errorplus="0.17">89.67</inclination>
-			<period errorminus="0.000015" errorplus="0.000015">2.421818</period>
-			<semimajoraxis errorminus="0.00000015" errorplus="0.00000015">0.01581512</semimajoraxis>
-			<eccentricity errorminus="0.00188" errorplus="0.00188">0.00654</eccentricity>
-			<periastron errorminus="17.10" errorplus="17.10">282.45</periastron>
-			<temperature errorminus="6.6" errorplus="6.6">341.9</temperature>
-			<mass errorminus="0.000412" errorplus="0.000447">0.003637</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2016</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 d</name>
-			<name>2MASS J23062928-0502285 d</name>
-			<name>K2-112 d</name>
-			<name>EPIC 246199087 d</name>
-			<name>Gaia DR2 2635476908753563008 d</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.0023" errorplus="0.0023">2457682.2921</transittime>
-			<impactparameter errorminus="0.11" errorplus="0.11">0.17</impactparameter>
-			<radius errorminus="0.00205" errorplus="0.00205">0.06994</radius>
-			<inclination errorminus="0.16" errorplus="0.16">89.75</inclination>
-			<period errorminus="0.00017" errorplus="0.00017">4.04982</period>
-			<semimajoraxis errorminus="0.00000044" errorplus="0.00000044">0.02228038</semimajoraxis>
-			<eccentricity errorminus="0.00093" errorplus="0.00093">0.00837</eccentricity>
-			<periastron errorminus="6.17" errorplus="6.17">-8.73</periastron>
-			<temperature errorminus="5.6" errorplus="5.6">288.0</temperature>
-			<mass errorminus="0.000110" errorplus="0.000122">0.000934</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2017</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 e</name>
-			<name>2MASS J23062928-0502285 e</name>
-			<name>K2-112 e</name>
-			<name>EPIC 246199087 e</name>
-			<name>Gaia DR2 2635476908753563008 e</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.0025" errorplus="0.0025">2457574.9829</transittime>
-			<impactparameter errorminus="0.09" errorplus="0.11">0.12</impactparameter>
-			<radius errorminus="0.00241" errorplus="0.00232">0.08118</radius>
-			<inclination errorminus="0.12" errorplus="0.10">89.86</inclination>
-			<period errorminus="0.000091" errorplus="0.000091">6.099570</period>
-			<semimajoraxis errorminus="0.00000034" errorplus="0.00000034">0.02928285</semimajoraxis>
-			<eccentricity errorminus="0.00058" errorplus="0.00058">0.00510</eccentricity>
-			<periastron errorminus="8.47" errorplus="8.47">108.37</periastron>
-			<temperature errorminus="4.9" errorplus="4.9">251.3</temperature>
-			<mass errorminus="0.000236" errorplus="0.000249">0.002429</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2017</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 f</name>
-			<name>2MASS J23062928-0502285 f</name>
-			<name>K2-112 f</name>
-			<name>EPIC 246199087 f</name>
-			<name>Gaia DR2 2635476908753563008 f</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.0072" errorplus="0.0072">2457616.1548</transittime>
-			<impactparameter errorminus="0.035" errorplus="0.035">0.382</impactparameter>
-			<radius errorminus="0.00268" errorplus="0.00259">0.09332</radius>
-			<inclination errorminus="0.034" errorplus="0.034">89.680</inclination>
-			<period errorminus="0.00053" errorplus="0.00053">9.20648</period>
-			<semimajoraxis errorminus="0.00000048" errorplus="0.00000048">0.03853361</semimajoraxis>
-			<eccentricity errorminus="0.00068" errorplus="0.00068">0.01007</eccentricity>
-			<periastron errorminus="3.11" errorplus="3.11">368.81</periastron>
-			<temperature errorminus="4.2" errorplus="4.2">219.0</temperature>
-			<mass errorminus="0.000245" errorplus="0.000252">0.002939</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2017</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 g</name>
-			<name>2MASS J23062928-0502285 g</name>
-			<name>K2-112 g</name>
-			<name>EPIC 246199087 g</name>
-			<name>Gaia DR2 2635476908753563008 g</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.0058" errorplus="0.0058">2457529.4724</transittime>
-			<impactparameter errorminus="0.031" errorplus="0.031">0.421</impactparameter>
-			<radius errorminus="0.00294" errorplus="0.00285">0.10242</radius>
-			<inclination errorminus="0.025" errorplus="0.025">89.710</inclination>
-			<period errorminus="0.00044" errorplus="0.00044">12.35281</period>
-			<semimajoraxis errorminus="0.00000032" errorplus="0.00000032">0.04687692</semimajoraxis>
-			<eccentricity errorminus="0.00058" errorplus="0.00058">0.00208</eccentricity>
-			<periastron errorminus="13.83" errorplus="13.83">191.34</periastron>
-			<temperature errorminus="3.8" errorplus="3.8">198.6</temperature>
-			<mass errorminus="0.000299" errorplus="0.000308">0.003612</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2017</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-			<image>eso1706a</image>
-			<imagedescription>Artist's impression of the TRAPPIST-1 planetary system. Credit: ESO/M. Kornmesser/spaceengine.org.</imagedescription>
-		</planet>
-		<planet>
-			<name>TRAPPIST-1 h</name>
-			<name>2MASS J23062928-0502285 h</name>
-			<name>K2-112 h</name>
-			<name>EPIC 246199087 h</name>
-			<name>Gaia DR2 2635476908753563008 h</name>
-			<list>Confirmed planets</list>
-			<istransiting>1</istransiting>
-			<transittime errorminus="0.0018" errorplus="0.0018">2457700.0875</transittime>
-			<impactparameter errorminus="0.29" errorplus="0.22">0.45</impactparameter>
-			<radius errorminus="0.00241" errorplus="0.00232">0.06896</radius>
-			<inclination errorminus="0.05" errorplus="0.10">89.80</inclination>
-			<period errorminus="0.00068" errorplus="0.00068">18.76626</period>
-			<semimajoraxis errorminus="0.00000080" errorplus="0.00000080">0.06193488</semimajoraxis>
-			<eccentricity errorminus="0.00121" errorplus="0.00121">0.00567</eccentricity>
-			<periastron errorminus="9.66" errorplus="9.66">338.92</periastron>
-			<temperature>167</temperature>
-			<mass errorminus="0.000154" errorplus="0.000176">0.001041</mass>
-			<lastupdate>18/09/18</lastupdate>
-			<discoveryyear>2017</discoveryyear>
-			<discoverymethod>transit</discoverymethod>
-			<description>Astronomers have found this system of seven Earth-sized planets just 40 light-years away. Using ground and space telescopes the planets were all detected as they passed in front of their parent star, the ultracool dwarf star known as TRAPPIST-1. The six inner planets form a near-resonant chain such that their orbital periods (1.51, 2.42, 4.04, 6.06, 9.21, 12.35 days) are near ratios of small integers. This architecture suggests that the planets formed farther from the star and migrated inward. The seven planets have equilibrium temperatures low enough to support liquid water on their surfaces.</description>
-		</planet>
-	</star>
-	<constellation>Aquarius</constellation>
+  <name>83 Leonis</name>
+  <name>HD 99491</name>
+  <name>HD 99492</name>
+  <rightascension>11 26 45.32180</rightascension>
+  <declination>+03 00 47.1551</declination>
+  <distance errorminus="0.14" errorplus="0.14">17.79</distance>
+  <binary>
+      <name>83 Leonis</name>
+      <name>83 Leo</name>
+      <name>Gliese 429</name>
+      <name>GJ 429</name>
+      <name>WDS J11268+0301</name>
+      <name>STF 1540</name>
+      <separation unit="arcsec">28.6</separation>
+      <separation unit="AU">515</separation>
+      <positionangle>150</positionangle>
+      <star>
+          <name>83 Leonis A</name>
+          <name>83 Leo A</name>
+          <name>HD 99491</name>
+          <name>HIP 55846</name>
+          <name>TYC 267-1191-1</name>
+          <name>SAO 118864</name>
+          <name>HR 4414</name>
+          <name>Gliese 429 A</name>
+          <name>GJ 429 A</name>
+          <name>BD+03 2502</name>
+          <name>2MASS J11264531+0300475</name>
+          <name>WDS J11268+0301 A</name>
+          <name>STF 1540 A</name>
+          <magB>7.29</magB>
+          <magV>6.50</magV>
+          <magR>6.0</magR>
+          <magI>5.6</magI>
+          <magJ errorminus="0.023" errorplus="0.023">5.165</magJ>
+          <magH errorminus="0.065" errorplus="0.065">4.937</magH>
+          <magK errorminus="0.015" errorplus="0.015">4.747</magK>
+          <mass errorminus="0.062" errorplus="0.058">0.995</mass>
+          <radius errorminus="0.04" errorplus="0.03">0.93</radius>
+          <temperature>5509</temperature>
+          <spectraltype>K0IV</spectraltype>
+      </star>
+      <star>
+          <name>83 Leonis B</name>
+          <name>83 Leo B</name>
+          <name>HD 99492</name>
+          <name>HIP 55848</name>
+          <name>TYC 267-1200-1</name>
+          <name>SAO 118865</name>
+          <name>Gliese 429 B</name>
+          <name>GJ 429 B</name>
+          <name>BD+03 2503</name>
+          <name>2MASS J11264627+0300229</name>
+          <name>WDS J11268+0301 B</name>
+          <name>STF 1540 B</name>
+          <mass errorminus="0.02" errorplus="0.02">0.85</mass>
+          <radius errorminus="0.02" errorplus="0.02">0.78</radius>
+          <magV>7.38</magV>
+          <magB>7.29</magB>
+          <magR>6.0</magR>
+          <magI>5.6</magI>
+          <magJ errorminus="0.023" errorplus="0.023">5.165</magJ>
+          <magH errorminus="0.065" errorplus="0.065">4.937</magH>
+          <magK errorminus="0.015" errorplus="0.015">4.747</magK>
+          <age errorminus="4.1" errorplus="4.1">4.8</age>
+          <metallicity errorminus="0.03" errorplus="0.03">0.3</metallicity>
+          <temperature errorminus="44" errorplus="44">4929</temperature>
+          <spectraltype>K2V</spectraltype>
+          <planet>
+              <name>83 Leonis B b</name>
+              <name>83 Leo B b</name>
+              <name>HD 99492 b</name>
+              <name>Gliese 429 B b</name>
+              <name>GJ 429 B b</name>
+              <list>Confirmed planets</list>
+              <mass errorminus="0.006" errorplus="0.006" type="msini">0.079</mass>
+              <period errorminus="0.003" errorplus="0.003">17.054</period>
+              <semimajoraxis errorminus="0.001" errorplus="0.001">0.123</semimajoraxis>
+              <eccentricity errorminus="0.06" errorplus="0.06">0.07</eccentricity>
+              <periastron errorminus="75.4" errorplus="75.4">240.7</periastron>
+              <transittime errorminus="0.855" errorplus="0.55">2457367.776</transittime>
+              <istransiting>0</istransiting>
+              <discoverymethod>RV</discoverymethod>
+              <description>The first planet around the star 83 Leonis B (HD 99492) was discovered in 2004. A second planet was announced 6 years later but was subsequently shown to be an artifact of the stellar activity cycle.</description>
+              <lastupdate>17/11/28</lastupdate>
+              <discoveryyear>2004</discoveryyear>
+              <list>Planets in binary systems, S-type</list>
+          </planet>
+          <planet>
+              <name>83 Leonis B c</name>
+              <name>83 Leo B c</name>
+              <name>HD 99492 c</name>
+              <name>Gliese 429 B c</name>
+              <name>GJ 429 B c</name>
+              <list>Retracted planet candidate</list>
+              <mass errorminus="0.06" errorplus="0.06" type="msini">0.36</mass>
+              <period errorminus="744" errorplus="744">4970</period>
+              <semimajoraxis errorminus="0.5" errorplus="0.5">5.4</semimajoraxis>
+              <eccentricity errorminus="0.2" errorplus="0.2">0.1</eccentricity>
+              <periastron errorminus="64" errorplus="64">38</periastron>
+              <periastrontime errorminus="2210" errorplus="2210">2449636</periastrontime>
+              <discoverymethod>RV</discoverymethod>
+              <description>HD 99492 c was announced in 2010. Subsequent observations showed that the radial velocity variations attributed to this planet correlated with the stellar activity cycle, indicating that the planet is an artifact of the activity.</description>
+              <lastupdate>17/11/28</lastupdate>
+              <discoveryyear>2010</discoveryyear>
+              <list>Planets in binary systems, S-type</list>
+          </planet>
+      </star>
+  </binary>
+  <constellation>Leo</constellation>
 </system>
-
 
     `;
 };

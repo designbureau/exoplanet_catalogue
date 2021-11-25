@@ -21,18 +21,6 @@ const generateSystem = (
     let planetsArray = [];
     Array.isArray(planet) ? (planetsArray = planet) : planetsArray.push(planet);
 
-    // let orbitsGroup = new THREE.Group();
-
-    // if (starGroup === null) {
-    //   scene.add(orbitsGroup);
-    // } else {
-    //   starGroup.add(orbitsGroup);
-    // }
-    // orbitsGroup.rotation.x = Math.PI * 0.5;
-    // orbitsGroup.rotation.y = Math.PI * 0.5;
-    // orbitsGroup.rotation.z = Math.PI * 0.5;
-
-    // console.log(planets);
     planetsArray.map((planet, i) => {
       let semimajoraxis, eccentricity, period, inclination, radius, name;
 
@@ -41,7 +29,7 @@ const generateSystem = (
             ? planet.name[0]._text
             : planet.name._text)
         : "planet-" + i;
-      // console.log(name);
+      console.log(name);
 
       planet.hasOwnProperty("radius")
         ? (radius = parseFloat(planet.radius._text))
@@ -52,7 +40,7 @@ const generateSystem = (
             : 1);
 
       const planetMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 32, 32),
+        new THREE.SphereGeometry(radius, 64, 64),
         material
       );
 
@@ -74,11 +62,6 @@ const generateSystem = (
         : (inclination = 0);
 
       planetMesh.position.x = semimajoraxis;
-      // planetMesh.rotation.y = Math.PI * eccentricity;
-
-      // planet.hasOwnProperty("name")? name = planet.name[0]._text : "planet-" + i;
-      // planetMesh.name = name;
-      // planetMesh.name = "planet-" + i;
       planetMesh.name = name;
 
       //Orbits
@@ -98,14 +81,7 @@ const generateSystem = (
       const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
       orbitMaterial.transparent = true;
       orbitMaterial.opacity = 0.25;
-      // Create the final object to add to the scene
       const orbitEllipse = new THREE.Line(geometry, orbitMaterial);
-
-      // orbitEllipse.rotation.x = inclination;
-      // orbitEllipse.rotation.y = Math.sin(inclination);
-      // orbitEllipse.rotation.z = Math.cos(inclination);
-
-      // orbitEllipse.rotation.x = inclination;
 
       let orbitsGroup = new THREE.Group();
       orbitsGroup.add(planetMesh, orbitEllipse);
@@ -136,12 +112,14 @@ const generateSystem = (
 
     const starsArraySize = starsArray.length;
     starsArray.map((star, i) => {
-      let starRadius;
+      let starRadius = 1;
+
       star.hasOwnProperty("radius")
         ? (starRadius = parseFloat(star.radius._text))
         : (starRadius = 1);
+
       const starMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(starRadius * jupiterMass, 32, 32),
+        new THREE.SphereGeometry(starRadius * jupiterMass, 64, 64),
         material
       );
 
