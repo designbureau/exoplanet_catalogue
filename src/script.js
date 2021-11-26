@@ -2,7 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
-import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
+import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import * as dat from "lil-gui";
 import * as xmljs from "xml-js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -60,7 +60,7 @@ const material = new THREE.MeshNormalMaterial();
  */
 
 const systemParameters = {};
-systemParameters.distance = 215 * 2;
+systemParameters.distance = 1;
 systemParameters.speed = 0.01;
 gui.add(systemParameters, "speed").min(0).max(0.1).step(0.001);
 
@@ -110,7 +110,7 @@ const camera = new THREE.PerspectiveCamera(
   45,
   sizes.width / sizes.height,
   0.1,
-  100000
+  1000000
 );
 camera.position.x = 0;
 camera.position.y = 0;
@@ -118,28 +118,72 @@ camera.position.z = 100;
 
 scene.add(camera);
 
-const controlParams = {};
-controlParams.orbit = true;
 
-// Controls
+
+
+/**
+ * Controls
+ */
+const controlParams = {
+  orbit: true,
+  fly: false,
+  pointerlock: false
+}
+
+const controlsFolder = gui.addFolder("Camera Controls");
+controlsFolder.add(controlParams, 'orbit').name('Orbit').listen().onChange(function(){setChecked("orbit")});
+controlsFolder.add(controlParams, 'fly').name('Fly').listen().onChange(function(){setChecked("fly")});
+// controlsFolder.add(controlParams, 'pointerlock').name('Pointer Lock').listen().onChange(function(){setChecked("pointerlock")});
+
+function setChecked( prop ){
+  for (let param in controlParams){
+    controlParams[param] = false;
+  }
+  controlParams[prop] = true;
+  toggleControl();
+}
+
+
 let controls = new OrbitControls(camera, canvas);
-// controls.enablePan = true;
-// controls.screenSpacePanning = true;
 
 const toggleControl = () => {
   if (controlParams.orbit === true) {
     controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
-  } else {
+  }
+  if(controlParams.fly === true) {
     controls = new FlyControls(camera, canvas);
     controls.movementSpeed = 0.5;
-    controls.rollSpeed = 0.025;
+    controls.rollSpeed = 0.005;
     controls.autoForward = false;
     controls.dragToLook = true;
+    controls.enableZoom = false;
   }
 };
 
-gui.add(controlParams, "orbit").name("Orbit Control").onChange(toggleControl);
+
+/**
+ * Pointer events
+ */
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function onMouseMove( event ) {
+	// calculate mouse position in normalized device coordinates
+	// (-1 to +1) for both components
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+// function render() {
+
+
+// 	renderer.render( scene, camera );
+
+// }
+window.addEventListener( 'mousemove', onMouseMove, false );
+
+
 
 /**
  * Renderer
@@ -207,11 +251,26 @@ const tick = () => {
   }
 
   // Update controls
-
   controls.update(elapsedTime * 0.01);
+
+
+
+	// update the picking ray with the camera and mouse position
+	raycaster.setFromCamera( mouse, camera );
+
+	// calculate objects intersecting the picking ray
+	const intersects = raycaster.intersectObjects( scene.children );
+
+	for ( let i = 0; i < intersects.length; i ++ ) {
+		//  intersects[ i ].object.material.color.set( 0xff0000 );
+    console.log(intersects[i].object.name);
+	}
+
+
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
+
 };
 
 tick();

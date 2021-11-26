@@ -11,8 +11,20 @@ const generateSystem = (
   //jupiter:earth mass = 318
   //au:sol radius/mass/distance
   //jupiter:sol radius = 11
+  // solar radius in jupiter radii = 9,73116
 
-  const jupiterMass = 11;
+
+  const solRadius = 9.73116;
+  const jupiterRadius = 1;
+  const au = 2092.51;
+  const defaultBinarySeparation = 20; //known average
+  const defaultSemimajoraxis = 1;
+  let adjustedAU = au * systemParameters.distance;
+
+  
+
+
+
 
   /**
    * Planet Renderer
@@ -29,7 +41,7 @@ const generateSystem = (
             ? planet.name[0]._text
             : planet.name._text)
         : "planet-" + i;
-      console.log(name);
+      
 
       planet.hasOwnProperty("radius")
         ? (radius = parseFloat(planet.radius._text))
@@ -46,8 +58,8 @@ const generateSystem = (
 
       planet.hasOwnProperty("semimajoraxis")
         ? (semimajoraxis =
-            parseFloat(planet.semimajoraxis._text) * systemParameters.distance)
-        : (semimajoraxis = 100);
+            parseFloat(planet.semimajoraxis._text) * adjustedAU)
+        : (semimajoraxis = defaultSemimajoraxis * adjustedAU);
 
       planet.hasOwnProperty("eccentricity")
         ? (eccentricity = parseFloat(planet.eccentricity._text))
@@ -63,6 +75,10 @@ const generateSystem = (
 
       planetMesh.position.x = semimajoraxis;
       planetMesh.name = name;
+
+
+      console.log(name, "radius: " + radius, "period: " + period)
+
 
       //Orbits
       const curve = new THREE.EllipseCurve(
@@ -112,19 +128,32 @@ const generateSystem = (
 
     const starsArraySize = starsArray.length;
     starsArray.map((star, i) => {
-      let starRadius = 1;
+      let starRadius = solRadius;
+
+      let name;
 
       star.hasOwnProperty("radius")
         ? (starRadius = parseFloat(star.radius._text))
         : (starRadius = 1);
 
+      star.hasOwnProperty("name")
+      ? (name = Array.isArray(star.name)
+          ? star.name[0]._text
+          : star.name._text)
+      : "star-" + i;
+    
+
+
       const starMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(starRadius * jupiterMass, 64, 64),
+        new THREE.SphereGeometry(starRadius * solRadius, 64, 64),
         material
       );
 
       let starGroup = new THREE.Group();
 
+      starMesh.name = name;
+
+      //TODO: think about this some more.
       starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
       starGroup.add(starMesh);
 
@@ -142,7 +171,7 @@ const generateSystem = (
   /**
    * Binary Renderer
    */
-  const renderBinary = (binary, separation = 0, group = null) => {
+  const renderBinary = (binary, separation = null, group = null) => {
     let binaryArray = [];
     Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
 
@@ -151,21 +180,31 @@ const generateSystem = (
     if (group === null) {
       group = binaryGroup;
     } else {
-      binaryGroup.position.x = parseFloat(separation) * 215;
+      binaryGroup.position.x = parseFloat(separation) * adjustedAU;
     }
     scene.add(group);
 
+    if (separation === null) {
+      separation = defaultBinarySeparation * adjustedAU;
+    }
+
+    //Binary loop
     binaryArray.map((binary) => {
-      // console.log(binary);
+
+      //render star
+      
+      // if(binary.hasOwnProperty("separation")){
+      //   Array.isArray(binary.separation) ?
+      // } 
 
       binary.hasOwnProperty("star") &&
         renderStar(
           binary.star,
-          binary.hasOwnProperty("separation") ? binary.separation._text : 500,
+          binary.hasOwnProperty("separation") ? binary.separation._text : defaultBinarySeparation * adjustedAU,
           group
         );
 
-      //TODO: does this need a group?
+      //TODO: add separation?
       binary.hasOwnProperty("binary") && renderBinary(binary.binary, group);
 
       //render planets
