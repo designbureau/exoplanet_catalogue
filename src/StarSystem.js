@@ -1,71 +1,64 @@
 const StarSystem = () => {
   return `
   <system>
-	<name>TrES-2</name>
-	<name>Kepler-1</name>
-	<name>KOI-1</name>
-	<name>KIC 11446443</name>
-	<rightascension>19 07 14</rightascension>
-	<declination>+49 18 59</declination>
-	<distance errorminus="11" errorplus="11">213</distance>
-	<binary>
-		<name>TrES-2</name>
-		<separation errorminus="0.0015" errorplus="0.0015" unit="arcsec">1.1054</separation>
-		<separation errorminus="13" errorplus="13" unit="AU">216</separation>
-		<positionangle errorminus="0.007" errorplus="0.007">136.325</positionangle>
-		<star>
-			<name>TrES-2 A</name>
-			<name>TYC 3549-02811-1</name>
-			<name>2MASS J19071403+4918590</name>
-			<name>KIC 11446443</name>
-			<name>Kepler-1</name>
-			<name>KOI-1</name>
-			<mass errorminus="0.063" errorplus="0.063">0.983</mass>
-			<radius errorminus="0.033" errorplus="0.033">1.003</radius>
-			<metallicity>0.001</metallicity>
-			<magB errorminus="0.10" errorplus="0.10">11.85</magB>
-			<magV errorminus="0.08" errorplus="0.08">11.25</magV>
-			<magJ errorminus="0.020" errorplus="0.020">10.232</magJ>
-			<magH errorminus="0.026" errorplus="0.026">9.920</magH>
-			<magK errorminus="0.022" errorplus="0.022">9.846</magK>
-			<spectraltype>G0</spectraltype>
-			<temperature errorminus="50" errorplus="50">5850</temperature>
-			<planet>
-				<name>TrES-2</name>
-				<name>TrES-2 A b</name>
-				<name>TrES-2 b</name>
-				<name>Kepler-1 b</name>
-				<name>KOI-1.01</name>
-				<name>KOI-1 b</name>
-				<name>KIC 11446443 b</name>
-				<list>Confirmed planets</list>
-				<list>Planets in binary systems, S-type</list>
-				<mass>1.253</mass>
-				<radius>1.169</radius>
-				<period>2.470613402</period>
-				<semimajoraxis>0.03556</semimajoraxis>
-				<eccentricity>0.0</eccentricity>
-				<inclination>83.874</inclination>
-				<transittime errorminus="0.00021" errorplus="0.00021" unit="BJD">2454502.56227</transittime>
-				<discoverymethod>transit</discoverymethod>
-				<lastupdate>13/01/27</lastupdate>
-				<discoveryyear>2006</discoveryyear>
-				<description>The planet TrES-2 b is a Hot Jupiter orbiting the star GSC 03549-02811. Kipping and Spiegel (2011) identified it as the darkest known exoplanet, reflecting less than 1% of the light that hits it.</description>
-				<istransiting>1</istransiting>
-			</planet>
-		</star>
-		<star>
-			<name>TrES-2 B</name>
-			<magJ errorminus="0.020" errorplus="0.020">13.128</magJ>
-			<magH errorminus="0.0073" errorplus="0.0073">12.3715</magH>
-			<magK errorminus="0.019" errorplus="0.019">12.268</magK>
-			<temperature errorminus="29" errorplus="29">3669</temperature>
-			<mass errorminus="0.013" errorplus="0.013">0.509</mass>
-		</star>
-	</binary>
-	<constellation>Draco</constellation>
+	<name>WASP-18</name>
+	<name>HD 10069</name>
+	<name>HIP 7562</name>
+	<rightascension>01 37 25.0335</rightascension>
+	<declination>-45 40 40.3765</declination>
+	<distance errorminus="0.37" errorplus="0.37">123.92</distance>
+	<star>
+		<name>WASP-18</name>
+		<name>HD 10069</name>
+		<name>HIP 7562</name>
+		<name>Gaia DR2 4955371367334610048</name>
+		<name>TYC 8040-72-1</name>
+		<radius>1.23</radius>
+		<magV errorminus="0.018" errorplus="0.018">9.303</magV>
+		<magJ errorminus="0.018" errorplus="0.018">8.409</magJ>
+		<magH errorminus="0.055" errorplus="0.055">8.231</magH>
+		<magK errorminus="0.027" errorplus="0.027">8.131</magK>
+		<magB>9.74</magB>
+		<mass>1.22</mass>
+		<temperature>6400.00</temperature>
+		<spectraltype>F6IV/V</spectraltype>
+		<planet>
+			<name>WASP-18 b</name>
+			<name>HD 10069 b</name>
+			<name>HIP 7562 b</name>
+			<name>Gaia DR2 4955371367334610048 b</name>
+			<name>TYC 8040-72-1 b</name>
+			<semimajoraxis>0.020000</semimajoraxis>
+			<inclination errorminus="0.279" errorplus="0.279">85.680</inclination>
+			<period errorminus="0.00000234" errorplus="0.00000234">0.94124000</period>
+			<description>This planet was discovered by Hellier et al. 2009. This was a ground based discovery. The parameters listed here are those reported by Pearson 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+			<mass>10.42954</mass>
+			<discoverymethod>transit</discoverymethod>
+			<istransiting>1</istransiting>
+			<discoveryyear>2009</discoveryyear>
+			<list>Confirmed planets</list>
+			<lastupdate>19/12/05</lastupdate>
+		</planet>
+		<planet>
+			<name>WASP-18 c</name>
+			<name>HD 10069 c</name>
+			<name>HIP 7562 c</name>
+			<name>Gaia DR2 4955371367334610048 c</name>
+			<name>TYC 8040-72-1 c</name>
+			<semimajoraxis>0.035000</semimajoraxis>
+			<eccentricity>0.015000</eccentricity>
+			<periastron errorminus="13.0000" errorplus="13.0000">272.0000</periastron>
+			<period errorminus="0.00640000" errorplus="0.00640000">2.15580000</period>
+			<description>This planet was discovered by Pearson 2019. The discovery was made with a space based telescope (0.1 m TESS Telescope). The parameters listed here are those reported by Pearson 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+			<mass errorminus="0.03870" errorplus="0.03870">0.17368</mass>
+			<discoverymethod>timing</discoverymethod>
+			<discoveryyear>2019</discoveryyear>
+			<list>Confirmed planets</list>
+			<lastupdate>19/12/05</lastupdate>
+		</planet>
+	</star>
+	<constellation>Phoenix</constellation>
 </system>
-
 
 
     `;

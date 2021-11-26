@@ -14,3 +14,12 @@ body {
   left: 0;
   outline: none;
 }
+
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-crosshair {
+  cursor: crosshair;
+
+  /* cursor: url('path-to-image.png'), auto;	 */
+}

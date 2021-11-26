@@ -127,12 +127,11 @@ scene.add(camera);
 const controlParams = {
   orbit: true,
   fly: false,
-  pointerlock: false
 }
 
 const controlsFolder = gui.addFolder("Camera Controls");
 controlsFolder.add(controlParams, 'orbit').name('Orbit').listen().onChange(function(){setChecked("orbit")});
-controlsFolder.add(controlParams, 'fly').name('Fly').listen().onChange(function(){setChecked("fly")});
+controlsFolder.add(controlParams, 'fly').name('Fly').listen().onChange(function(){setChecked("fly");});
 // controlsFolder.add(controlParams, 'pointerlock').name('Pointer Lock').listen().onChange(function(){setChecked("pointerlock")});
 
 function setChecked( prop ){
@@ -140,26 +139,36 @@ function setChecked( prop ){
     controlParams[param] = false;
   }
   controlParams[prop] = true;
+  controls.dispose();
   toggleControl();
 }
 
 
-let controls = new OrbitControls(camera, canvas);
+
+let controls;
+
 
 const toggleControl = () => {
+  
   if (controlParams.orbit === true) {
     controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
+    canvas.classList.add("cursor-grab");
+    canvas.classList.remove("cursor-crosshair");
   }
   if(controlParams.fly === true) {
+    canvas.classList.remove("cursor-grab");
+    canvas.classList.add("cursor-crosshair");
     controls = new FlyControls(camera, canvas);
-    controls.movementSpeed = 0.5;
+    controls.movementSpeed = 10;
     controls.rollSpeed = 0.005;
     controls.autoForward = false;
-    controls.dragToLook = true;
-    controls.enableZoom = false;
+    // controls.dragToLook = true;
+    controls.enableDamping = true;
   }
 };
+
+toggleControl();
 
 
 /**
@@ -219,6 +228,26 @@ gui.add(afterimagePass.uniforms["damp"], "value", 0.5, 1).step(0.001);
  */
 const clock = new THREE.Clock();
 
+let currentIntersect = null;
+
+window.addEventListener('click', () =>
+{
+    if(currentIntersect)
+    {
+      console.log(currentIntersect.object.type)
+      console.log(currentIntersect.object)
+      // console.log(currentIntersect.object.position);
+      if(currentIntersect.object.objectType === "star"){
+        controls.target = currentIntersect.object.parent.position;
+      }
+      if(currentIntersect.object.objectType === "planet"){
+        controls.target = currentIntersect.object.position;
+      }
+    }
+})
+
+
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
@@ -233,13 +262,7 @@ const tick = () => {
       (Math.sin(planet.eccentricity) + planet.semimajoraxis) *
       Math.sin(elapsedTime * planet.period * systemParameters.speed);
 
-    // planet.mesh.position.z =
-    //   Math.sin(planet.inclination) *
-    //   Math.sin(elapsedTime * planet.period * systemParameters.speed);
-
-    // planet.mesh.position.z =
-    //   Math.cos(planet.inclination) *
-    //   Math.cos(elapsedTime * planet.period * systemParameters.speed);
+ 
   });
 
   // Render
@@ -261,10 +284,24 @@ const tick = () => {
 	// calculate objects intersecting the picking ray
 	const intersects = raycaster.intersectObjects( scene.children );
 
-	for ( let i = 0; i < intersects.length; i ++ ) {
-		//  intersects[ i ].object.material.color.set( 0xff0000 );
-    console.log(intersects[i].object.name);
-	}
+
+  if(intersects.length)
+  {
+      if(!currentIntersect)
+      {
+          console.log('mouse enter')
+      }
+      currentIntersect = intersects[0]
+  }
+  else
+  {
+      if(currentIntersect)
+      {
+          console.log('mouse leave')
+      }
+      currentIntersect = null
+  }
+  
 
 
 

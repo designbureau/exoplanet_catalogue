@@ -75,6 +75,7 @@ const generateSystem = (
 
       planetMesh.position.x = semimajoraxis;
       planetMesh.name = name;
+      planetMesh.objectType = "planet";
 
 
       console.log(name, "radius: " + radius, "period: " + period)
@@ -152,6 +153,7 @@ const generateSystem = (
       let starGroup = new THREE.Group();
 
       starMesh.name = name;
+      starMesh.objectType = "star";
 
       //TODO: think about this some more.
       starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
