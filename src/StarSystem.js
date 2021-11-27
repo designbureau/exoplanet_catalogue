@@ -1,63 +1,71 @@
 const StarSystem = () => {
   return `
   <system>
-	<name>WASP-18</name>
-	<name>HD 10069</name>
-	<name>HIP 7562</name>
-	<rightascension>01 37 25.0335</rightascension>
-	<declination>-45 40 40.3765</declination>
-	<distance errorminus="0.37" errorplus="0.37">123.92</distance>
-	<star>
-		<name>WASP-18</name>
-		<name>HD 10069</name>
-		<name>HIP 7562</name>
-		<name>Gaia DR2 4955371367334610048</name>
-		<name>TYC 8040-72-1</name>
-		<radius>1.23</radius>
-		<magV errorminus="0.018" errorplus="0.018">9.303</magV>
-		<magJ errorminus="0.018" errorplus="0.018">8.409</magJ>
-		<magH errorminus="0.055" errorplus="0.055">8.231</magH>
-		<magK errorminus="0.027" errorplus="0.027">8.131</magK>
-		<magB>9.74</magB>
-		<mass>1.22</mass>
-		<temperature>6400.00</temperature>
-		<spectraltype>F6IV/V</spectraltype>
-		<planet>
-			<name>WASP-18 b</name>
-			<name>HD 10069 b</name>
-			<name>HIP 7562 b</name>
-			<name>Gaia DR2 4955371367334610048 b</name>
-			<name>TYC 8040-72-1 b</name>
-			<semimajoraxis>0.020000</semimajoraxis>
-			<inclination errorminus="0.279" errorplus="0.279">85.680</inclination>
-			<period errorminus="0.00000234" errorplus="0.00000234">0.94124000</period>
-			<description>This planet was discovered by Hellier et al. 2009. This was a ground based discovery. The parameters listed here are those reported by Pearson 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
-			<mass>10.42954</mass>
-			<discoverymethod>transit</discoverymethod>
-			<istransiting>1</istransiting>
-			<discoveryyear>2009</discoveryyear>
-			<list>Confirmed planets</list>
-			<lastupdate>19/12/05</lastupdate>
-		</planet>
-		<planet>
-			<name>WASP-18 c</name>
-			<name>HD 10069 c</name>
-			<name>HIP 7562 c</name>
-			<name>Gaia DR2 4955371367334610048 c</name>
-			<name>TYC 8040-72-1 c</name>
-			<semimajoraxis>0.035000</semimajoraxis>
-			<eccentricity>0.015000</eccentricity>
-			<periastron errorminus="13.0000" errorplus="13.0000">272.0000</periastron>
-			<period errorminus="0.00640000" errorplus="0.00640000">2.15580000</period>
-			<description>This planet was discovered by Pearson 2019. The discovery was made with a space based telescope (0.1 m TESS Telescope). The parameters listed here are those reported by Pearson 2019 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
-			<mass errorminus="0.03870" errorplus="0.03870">0.17368</mass>
-			<discoverymethod>timing</discoverymethod>
-			<discoveryyear>2019</discoveryyear>
-			<list>Confirmed planets</list>
-			<lastupdate>19/12/05</lastupdate>
-		</planet>
-	</star>
-	<constellation>Phoenix</constellation>
+  <name>YZ Cet</name>
+  <name>HIP 5643</name>
+  <rightascension>01 12 30.6367</rightascension>
+  <declination>-16 59 56.3613</declination>
+  <distance>3.60</distance>
+  <star>
+      <name>YZ Cet</name>
+      <name>HIP 5643</name>
+      <name>Gaia DR2 2358524597030794112</name>
+      <name>TYC 5851-171-1</name>
+      <name>GJ 54.1</name>
+      <radius errorminus="0.01" errorplus="0.01">0.17</radius>
+      <magV>12.074</magV>
+      <magI errorminus="0.025" errorplus="0.025">8.910</magI>
+      <magJ errorminus="0.020" errorplus="0.020">7.258</magJ>
+      <magH errorminus="0.033" errorplus="0.033">6.749</magH>
+      <magK errorminus="0.017" errorplus="0.017">6.420</magK>
+      <mass errorminus="0.01" errorplus="0.01">0.13</mass>
+      <temperature errorminus="60.00" errorplus="60.00">3056.00</temperature>
+      <metallicity errorminus="0.080" errorplus="0.080">-0.260</metallicity>
+      <spectraltype>M4.5</spectraltype>
+      <planet>
+          <name>YZ Cet b</name>
+          <name>HIP 5643 b</name>
+          <name>Gaia DR2 2358524597030794112 b</name>
+          <name>TYC 5851-171-1 b</name>
+          <name>GJ 54.1 b</name>
+          <semimajoraxis errorminus="0.000520" errorplus="0.000520">0.015570</semimajoraxis>
+          <eccentricity errorminus="0.120000" errorplus="0.120000">0.000000</eccentricity>
+          <period errorminus="0.00021000" errorplus="0.00021000">1.96876000</period>
+          <description>This planet was discovered by Astudillo-Defru et al. 2017. This was a ground based discovery. The parameters listed here are those reported by Astudillo-Defru et al. 2017 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+          <mass errorminus="0.00041" errorplus="0.00041">0.00236</mass>
+          <discoverymethod>RV</discoverymethod>
+          <discoveryyear>2017</discoveryyear>
+          <list>Confirmed planets</list>
+          <lastupdate>17/08/24</lastupdate>
+      </planet>
+      <planet>
+          <name>YZ Cet c</name>
+          <name>HIP 5643 c</name>
+          <semimajoraxis errorminus="0.000700" errorplus="0.000700">0.020900</semimajoraxis>
+          <eccentricity errorminus="0.110000" errorplus="0.110000">0.040000</eccentricity>
+          <period errorminus="0.00022000" errorplus="0.00022000">3.06008000</period>
+          <description>This planet was discovered by Astudillo-Defru et al. 2017. This was a ground based discovery. The parameters listed here are those reported by Astudillo-Defru et al. 2017 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+          <mass errorminus="0.00044" errorplus="0.00044">0.00308</mass>
+          <discoverymethod>RV</discoverymethod>
+          <discoveryyear>2017</discoveryyear>
+          <list>Confirmed planets</list>
+          <lastupdate>17/08/24</lastupdate>
+      </planet>
+      <planet>
+          <name>YZ Cet d</name>
+          <name>HIP 5643 d</name>
+          <semimajoraxis errorminus="0.000930" errorplus="0.000930">0.027640</semimajoraxis>
+          <eccentricity errorminus="0.096000" errorplus="0.096000">0.129000</eccentricity>
+          <period errorminus="0.00042000" errorplus="0.00042000">4.65627000</period>
+          <description>This planet was discovered by Astudillo-Defru et al. 2017. This was a ground based discovery. The parameters listed here are those reported by Astudillo-Defru et al. 2017 and were imported into the Open Exoplanet Catalogue from the NASA Exoplanet Archive.</description>
+          <mass errorminus="0.00053" errorplus="0.00053">0.00359</mass>
+          <discoverymethod>RV</discoverymethod>
+          <discoveryyear>2017</discoveryyear>
+          <list>Confirmed planets</list>
+          <lastupdate>17/08/24</lastupdate>
+      </planet>
+  </star>
+  <constellation>Cetus</constellation>
 </system>
 
 

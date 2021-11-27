@@ -4,6 +4,7 @@ const generateSystem = (
   system,
   systemParameters,
   allPlanetsArray,
+  allStarsArray,
   scene,
   material
 ) => {
@@ -13,18 +14,12 @@ const generateSystem = (
   //jupiter:sol radius = 11
   // solar radius in jupiter radii = 9,73116
 
-
   const solRadius = 9.73116;
   const jupiterRadius = 1;
   const au = 2092.51;
   const defaultBinarySeparation = 20; //known average
   const defaultSemimajoraxis = 1;
   let adjustedAU = au * systemParameters.distance;
-
-  
-
-
-
 
   /**
    * Planet Renderer
@@ -36,12 +31,21 @@ const generateSystem = (
     planetsArray.map((planet, i) => {
       let semimajoraxis, eccentricity, period, inclination, radius, name;
 
-      planet.hasOwnProperty("name")
-        ? (name = Array.isArray(planet.name)
-            ? planet.name[0]._text
-            : planet.name._text)
-        : "planet-" + i;
-      
+      // planet.hasOwnProperty("name")
+      //   ? Array.isArray(planet.name)
+      //     ? (name = planet.name[0]._text)
+      //     : (name = "test")
+      //   : (name = "planet-" + i);
+
+      if (planet.hasOwnProperty("name")) {
+        if (Array.isArray(planet.name)) {
+          name = planet.name[0]._text;
+        } else {
+          name = planet.name._text;
+        }
+      } else {
+        name = "planet-" + i;
+      }
 
       planet.hasOwnProperty("radius")
         ? (radius = parseFloat(planet.radius._text))
@@ -57,16 +61,26 @@ const generateSystem = (
       );
 
       planet.hasOwnProperty("semimajoraxis")
-        ? (semimajoraxis =
-            parseFloat(planet.semimajoraxis._text) * adjustedAU)
+        ? (semimajoraxis = parseFloat(planet.semimajoraxis._text) * adjustedAU)
         : (semimajoraxis = defaultSemimajoraxis * adjustedAU);
 
       planet.hasOwnProperty("eccentricity")
-        ? (eccentricity = parseFloat(planet.eccentricity._text))
+        ? (eccentricity = planet.eccentricity.hasOwnProperty("_text")
+            ? parseFloat(planet.eccentricity._text)
+            : planet.eccentricity.hasOwnProperty("upperlimit")
+            ? parseFloat(planet.eccentricity.upperlimit)
+            : 0)
         : (eccentricity = 0);
 
+      // upperlimit
       planet.hasOwnProperty("period")
-        ? (period = parseFloat(planet.period._text))
+        ? (period = parseFloat(
+            planet.period.hasOwnProperty("_text")
+              ? planet.period._text
+              : planet.period.hasOwnProperty("upperlimit")
+              ? planet.period.upperlimit
+              : 0.1
+          ))
         : (period = 0.1);
 
       planet.hasOwnProperty("inclination")
@@ -77,9 +91,7 @@ const generateSystem = (
       planetMesh.name = name;
       planetMesh.objectType = "planet";
 
-
-      console.log(name, "radius: " + radius, "period: " + period)
-
+      console.log("planet", planetMesh);
 
       //Orbits
       const curve = new THREE.EllipseCurve(
@@ -93,16 +105,21 @@ const generateSystem = (
         0 // aRotation
       );
 
-      const points = curve.getPoints(100);
+      const points = curve.getPoints(1000);
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
       orbitMaterial.transparent = true;
       orbitMaterial.opacity = 0.25;
       const orbitEllipse = new THREE.Line(geometry, orbitMaterial);
 
+      orbitEllipse.name = name + " orbit";
+      console.log(orbitEllipse);
+
       let orbitsGroup = new THREE.Group();
       orbitsGroup.add(planetMesh, orbitEllipse);
       orbitsGroup.rotation.x = inclination;
+
+      console.log(orbitsGroup);
 
       allPlanetsArray.push({
         mesh: planetMesh,
@@ -138,12 +155,10 @@ const generateSystem = (
         : (starRadius = 1);
 
       star.hasOwnProperty("name")
-      ? (name = Array.isArray(star.name)
-          ? star.name[0]._text
-          : star.name._text)
-      : "star-" + i;
-    
-
+        ? (name = Array.isArray(star.name)
+            ? star.name[0]._text
+            : star.name._text)
+        : "star-" + i;
 
       const starMesh = new THREE.Mesh(
         new THREE.SphereGeometry(starRadius * solRadius, 64, 64),
@@ -155,8 +170,17 @@ const generateSystem = (
       starMesh.name = name;
       starMesh.objectType = "star";
 
+      console.log("star", starMesh);
+
+      starGroup.name = name + " group";
+
+      console.log(starGroup);
+
       //TODO: think about this some more.
       starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
+      // starGroup.position.x = parseFloat(separation);
+      // starGroup.position.x = parseFloat(separation) + i * adjustedAU;
+
       starGroup.add(starMesh);
 
       if (binaryGroup == null) {
@@ -164,6 +188,11 @@ const generateSystem = (
       } else {
         binaryGroup.add(starGroup);
       }
+
+      allStarsArray.push({
+        mesh: starMesh,
+        planets: star.hasOwnProperty("planet") ? star.planet : null,
+      });
 
       //render planets
       star.hasOwnProperty("planet") && renderPlanet(star.planet, starGroup);
@@ -173,9 +202,24 @@ const generateSystem = (
   /**
    * Binary Renderer
    */
-  const renderBinary = (binary, separation = null, group = null) => {
+  const renderBinary = (
+    binary,
+    isChild = false,
+    separation = null,
+    group = null
+  ) => {
     let binaryArray = [];
     Array.isArray(binary) ? (binaryArray = binary) : binaryArray.push(binary);
+
+    if (separation === null && isChild === true) {
+      separation = defaultBinarySeparation * adjustedAU;
+    }
+
+    let binarySemimajorAxis;
+    binary.hasOwnProperty("semimajoraxis")
+      ? (binarySemimajorAxis = parseFloat(binary.semimajoraxis._text))
+      : (binarySemimajorAxis = separation);
+    console.log(binarySemimajorAxis);
 
     let binaryGroup = new THREE.Group();
 
@@ -184,30 +228,29 @@ const generateSystem = (
     } else {
       binaryGroup.position.x = parseFloat(separation) * adjustedAU;
     }
-    scene.add(group);
 
-    if (separation === null) {
-      separation = defaultBinarySeparation * adjustedAU;
-    }
+    scene.add(group);
 
     //Binary loop
     binaryArray.map((binary) => {
-
       //render star
-      
+
       // if(binary.hasOwnProperty("separation")){
       //   Array.isArray(binary.separation) ?
-      // } 
+      // }
 
       binary.hasOwnProperty("star") &&
         renderStar(
           binary.star,
-          binary.hasOwnProperty("separation") ? binary.separation._text : defaultBinarySeparation * adjustedAU,
+          binary.hasOwnProperty("separation")
+            ? binary.separation._text
+            : defaultBinarySeparation * adjustedAU,
           group
         );
 
       //TODO: add separation?
-      binary.hasOwnProperty("binary") && renderBinary(binary.binary, group);
+      binary.hasOwnProperty("binary") &&
+        renderBinary(binary.binary, true, separation, group);
 
       //render planets
       binary.hasOwnProperty("planet") && renderPlanet(binary.planet, group);
