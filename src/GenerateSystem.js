@@ -31,12 +31,6 @@ const generateSystem = (
     planetsArray.map((planet, i) => {
       let semimajoraxis, eccentricity, period, inclination, radius, name;
 
-      // planet.hasOwnProperty("name")
-      //   ? Array.isArray(planet.name)
-      //     ? (name = planet.name[0]._text)
-      //     : (name = "test")
-      //   : (name = "planet-" + i);
-
       if (planet.hasOwnProperty("name")) {
         if (Array.isArray(planet.name)) {
           name = planet.name[0]._text;
@@ -47,22 +41,38 @@ const generateSystem = (
         name = "planet-" + i;
       }
 
-      planet.hasOwnProperty("radius")
-        ? (radius = parseFloat(planet.radius._text))
-        : (radius = planet.hasOwnProperty("mass")
-            ? planet.mass.hasOwnProperty("_text")
-              ? parseFloat(planet.mass._text)
-              : 1
-            : 1);
+      if (planet.hasOwnProperty("radius")) {
+        if (planet.radius.hasOwnProperty("_text")) {
+          radius = parseFloat(planet.radius._text);
+        } else {
+          radius = 1;
+          // if(planet.hasOwnProperty("mass")){
+          //   if(planet.mass.hasOwnProperty("_text")){
+          //     radius = parseFloat(planet.mass._text)
+          //   }
+
+          // }
+        }
+      } else {
+        radius = 1;
+      }
+
+      // upperlimit
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 64, 64),
         material
       );
 
-      planet.hasOwnProperty("semimajoraxis")
-        ? (semimajoraxis = parseFloat(planet.semimajoraxis._text) * adjustedAU)
-        : (semimajoraxis = defaultSemimajoraxis * adjustedAU);
+      if (planet.hasOwnProperty("semimajoraxis")) {
+        if (planet.semimajoraxis.hasOwnProperty("_text")) {
+          semimajoraxis = parseFloat(planet.semimajoraxis._text) * adjustedAU;
+        } else {
+          semimajoraxis = defaultSemimajoraxis * adjustedAU;
+        }
+      } else {
+        semimajoraxis = defaultSemimajoraxis * adjustedAU;
+      }
 
       planet.hasOwnProperty("eccentricity")
         ? (eccentricity = planet.eccentricity.hasOwnProperty("_text")

@@ -16,6 +16,7 @@ import generateSystem from "./GenerateSystem";
 
 // Debug
 const gui = new dat.GUI();
+gui.close();
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
@@ -98,6 +99,13 @@ generateSystem(
 const nav = document.getElementById("system_nav");
 const starList = document.createElement("ul");
 nav.append(starList);
+
+const navToggle = document.getElementById("nav_toggle");
+navToggle.addEventListener("click", (e) => {
+  nav.classList.contains("hide")
+    ? nav.classList.remove("hide")
+    : nav.classList.add("hide");
+});
 
 allStarsArray.map((star) => {
   const starListItem = document.createElement("li");
@@ -317,8 +325,10 @@ const params = {
   trails: false,
 };
 
-gui.add(params, "trails");
-gui.add(afterimagePass.uniforms["damp"], "value", 0.5, 1).step(0.001);
+const trailsFolder = gui.addFolder("Trails");
+
+trailsFolder.add(params, "trails");
+trailsFolder.add(afterimagePass.uniforms["damp"], "value", 0.5, 1).step(0.001);
 
 /**
  * Animate
@@ -375,12 +385,12 @@ const tick = () => {
 
   if (intersects.length) {
     if (!currentIntersect) {
-      console.log("mouse enter");
+      // console.log("mouse enter");
     }
     currentIntersect = intersects[0];
   } else {
     if (currentIntersect) {
-      console.log("mouse leave");
+      // console.log("mouse leave");
     }
     currentIntersect = null;
   }
