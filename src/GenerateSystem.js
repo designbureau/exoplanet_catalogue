@@ -74,24 +74,33 @@ const generateSystem = (
         semimajoraxis = defaultSemimajoraxis * adjustedAU;
       }
 
-      planet.hasOwnProperty("eccentricity")
-        ? (eccentricity = planet.eccentricity.hasOwnProperty("_text")
-            ? parseFloat(planet.eccentricity._text)
-            : planet.eccentricity.hasOwnProperty("upperlimit")
-            ? parseFloat(planet.eccentricity.upperlimit)
-            : 0)
-        : (eccentricity = 0);
+      if (planet.hasOwnProperty("eccentricity")) {
+        if (planet.eccentricity.hasOwnProperty("_text")) {
+          eccentricity = parseFloat(planet.eccentricity._text);
+        } else {
+          if (planet.eccentricity.hasOwnProperty("upperlimit")) {
+            eccentricity = parseFloat(planet.eccentricity.upperlimit);
+          } else {
+            eccentricity = 0;
+          }
+        }
+      } else {
+        eccentricity = 0;
+      }
 
-      // upperlimit
-      planet.hasOwnProperty("period")
-        ? (period = parseFloat(
-            planet.period.hasOwnProperty("_text")
-              ? planet.period._text
-              : planet.period.hasOwnProperty("upperlimit")
-              ? planet.period.upperlimit
-              : 0.1
-          ))
-        : (period = 0.1);
+      if (planet.hasOwnProperty("period")) {
+        if (planet.period.hasOwnProperty("_text")) {
+          period = parseFloat(planet.period._text);
+        } else {
+          if (planet.period.hasOwnProperty("upperlimit")) {
+            period = parseFloat(planet.period.upperlimit);
+          } else {
+            period = 0.1;
+          }
+        }
+      } else {
+        period = 0.1;
+      }
 
       planet.hasOwnProperty("inclination")
         ? (inclination = parseFloat(planet.inclination._text))
@@ -127,7 +136,9 @@ const generateSystem = (
 
       let orbitsGroup = new THREE.Group();
       orbitsGroup.add(planetMesh, orbitEllipse);
-      orbitsGroup.rotation.x = inclination;
+      // orbitsGroup.rotation.x = inclination;
+      orbitsGroup.rotation.x = inclination / 90;
+      // console.log("inclination", inclination);
 
       console.log(orbitsGroup);
 
