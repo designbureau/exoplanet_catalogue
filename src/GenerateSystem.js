@@ -80,13 +80,19 @@ const generateSystem = (
         } else {
           if (planet.eccentricity.hasOwnProperty("upperlimit")) {
             eccentricity = parseFloat(planet.eccentricity.upperlimit);
-          } else {
+          }
+          else if (planet.eccentricity.hasOwnProperty("lowerlimit")) {
+            eccentricity = parseFloat(planet.eccentricity.lowerlimit);
+          } 
+          else {
             eccentricity = 0;
           }
         }
       } else {
         eccentricity = 0;
       }
+      console.log("eccentricity:", eccentricity, "semimajoraxis:", semimajoraxis);
+
 
       if (planet.hasOwnProperty("period")) {
         if (planet.period.hasOwnProperty("_text")) {
@@ -94,7 +100,11 @@ const generateSystem = (
         } else {
           if (planet.period.hasOwnProperty("upperlimit")) {
             period = parseFloat(planet.period.upperlimit);
-          } else {
+          }
+          else if (planet.period.hasOwnProperty("lowerlimit")) {
+            period = parseFloat(planet.period.lowerlimit);
+          }
+          else {
             period = 0.1;
           }
         }
@@ -116,13 +126,15 @@ const generateSystem = (
       const curve = new THREE.EllipseCurve(
         0,
         0, // ax, aY
-        Math.cos(eccentricity) + semimajoraxis,
-        Math.sin(eccentricity) + semimajoraxis, // xRadius, yRadius
+        Math.cos(eccentricity * semimajoraxis) + semimajoraxis,
+        Math.sin(eccentricity * semimajoraxis) + semimajoraxis, // xRadius, yRadius
         0,
         2 * Math.PI, // aStartAngle, aEndAngle
         false, // aClockwise
         0 // aRotation
       );
+      // console.log(Math.cos(eccentricity * semimajoraxis) + semimajoraxis)
+      // console.log(Math.sin(eccentricity * semimajoraxis) + semimajoraxis)
 
       const points = curve.getPoints(1000);
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
