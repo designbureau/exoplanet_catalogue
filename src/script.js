@@ -9,6 +9,12 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
 import StarSystem from "./StarSystem";
+import {
+  getEllipse,
+  getApoapsis,
+  getPeriapsis,
+  getSemiMinorAxis,
+} from "./HelperFunctions";
 import generateSystem from "./GenerateSystem";
 /**
  * Base
@@ -357,12 +363,14 @@ const tick = () => {
   const delta = clock.getDelta();
 
   allPlanetsArray.map((planet) => {
+    const ellipse = getEllipse(planet.semimajoraxis, planet.eccentricity);
+
     planet.mesh.position.x =
-      (Math.cos(planet.eccentricity) + planet.semimajoraxis) *
+      ellipse.xRadius *
       Math.cos((elapsedTime / planet.period) * systemParameters.speed);
 
     planet.mesh.position.y =
-      (Math.sin(planet.eccentricity) + planet.semimajoraxis) *
+      ellipse.yRadius *
       Math.sin((elapsedTime / planet.period) * systemParameters.speed);
   });
 

@@ -1,4 +1,10 @@
 import * as THREE from "three";
+import {
+  getEllipse,
+  getApoapsis,
+  getPeriapsis,
+  getSemiMinorAxis,
+} from "./HelperFunctions";
 
 const generateSystem = (
   system,
@@ -80,19 +86,21 @@ const generateSystem = (
         } else {
           if (planet.eccentricity.hasOwnProperty("upperlimit")) {
             eccentricity = parseFloat(planet.eccentricity.upperlimit);
-          }
-          else if (planet.eccentricity.hasOwnProperty("lowerlimit")) {
+          } else if (planet.eccentricity.hasOwnProperty("lowerlimit")) {
             eccentricity = parseFloat(planet.eccentricity.lowerlimit);
-          } 
-          else {
+          } else {
             eccentricity = 0;
           }
         }
       } else {
         eccentricity = 0;
       }
-      console.log("eccentricity:", eccentricity, "semimajoraxis:", semimajoraxis);
-
+      console.log(
+        "eccentricity:",
+        eccentricity,
+        "semimajoraxis:",
+        semimajoraxis
+      );
 
       if (planet.hasOwnProperty("period")) {
         if (planet.period.hasOwnProperty("_text")) {
@@ -100,11 +108,9 @@ const generateSystem = (
         } else {
           if (planet.period.hasOwnProperty("upperlimit")) {
             period = parseFloat(planet.period.upperlimit);
-          }
-          else if (planet.period.hasOwnProperty("lowerlimit")) {
+          } else if (planet.period.hasOwnProperty("lowerlimit")) {
             period = parseFloat(planet.period.lowerlimit);
-          }
-          else {
+          } else {
             period = 0.1;
           }
         }
@@ -122,12 +128,14 @@ const generateSystem = (
 
       console.log("planet", planetMesh);
 
+      const ellipse = getEllipse(semimajoraxis, eccentricity);
+
       //Orbits
       const curve = new THREE.EllipseCurve(
         0,
         0, // ax, aY
-        Math.cos(eccentricity * semimajoraxis) + semimajoraxis,
-        Math.sin(eccentricity * semimajoraxis) + semimajoraxis, // xRadius, yRadius
+        ellipse.xRadius,
+        ellipse.yRadius, // xRadius, yRadius
         0,
         2 * Math.PI, // aStartAngle, aEndAngle
         false, // aClockwise
