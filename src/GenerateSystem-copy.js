@@ -96,12 +96,12 @@ const generateSystem = (
       } else {
         eccentricity = 0;
       }
-      console.log(
-        "eccentricity:",
-        eccentricity,
-        "semimajoraxis:",
-        semimajoraxis
-      );
+      // console.log(
+      //   "eccentricity:",
+      //   eccentricity,
+      //   "semimajoraxis:",
+      //   semimajoraxis
+      // );
 
       if (planet.hasOwnProperty("period")) {
         if (planet.period.hasOwnProperty("_text")) {
@@ -142,8 +142,6 @@ const generateSystem = (
         false, // aClockwise
         0 // aRotation
       );
-      // console.log(Math.cos(eccentricity * semimajoraxis) + semimajoraxis)
-      // console.log(Math.sin(eccentricity * semimajoraxis) + semimajoraxis)
 
       const points = curve.getPoints(1000);
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -224,12 +222,36 @@ const generateSystem = (
 
       console.log(starGroup);
 
+      console.log("starsArraySize", starsArraySize);
+
+      if (starsArraySize > 0 && separation === 0) {
+        separation = defaultBinarySeparation * adjustedAU;
+      }
+
       //TODO: think about this some more.
-      starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
+      // starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
       // starGroup.position.x = parseFloat(separation);
       // starGroup.position.x = parseFloat(separation) + i * adjustedAU;
 
+      if (i === 0) {
+        starGroup.position.x = -(separation / starsArraySize);
+      }
+      if (i != 0) {
+        starGroup.position.x = (separation / starsArraySize) * i;
+      }
+
       starGroup.add(starMesh);
+
+      // starGroup.position.x = parseFloat(separation) / starsArraySize;
+      // if (i === 0) {
+      // } else {
+      //   starGroup.position.x =
+      //     (parseFloat(separation) / starsArraySize) * adjustedAU;
+      // }
+
+      console.log(parseFloat(separation) / starsArraySize);
+
+      console.log("index", i);
 
       if (binaryGroup == null) {
         scene.add(starGroup);
@@ -267,7 +289,6 @@ const generateSystem = (
     binary.hasOwnProperty("semimajoraxis")
       ? (binarySemimajorAxis = parseFloat(binary.semimajoraxis._text))
       : (binarySemimajorAxis = separation);
-
     console.log(binarySemimajorAxis);
 
     let binaryGroup = new THREE.Group();
@@ -292,7 +313,7 @@ const generateSystem = (
         renderStar(
           binary.star,
           binary.hasOwnProperty("separation")
-            ? binary.separation._text
+            ? parseFloat(binary.separation._text)
             : defaultBinarySeparation * adjustedAU,
           group
         );
@@ -318,7 +339,8 @@ const generateSystem = (
   system.system.hasOwnProperty("star") && renderStar(system.system.star);
 
   //contains planet
-  system.system.hasOwnProperty("planet") && renderPlanet(system.system.planet);
+  system.system.hasOwnProperty("planet") &&
+    renderPlanet(system.system.planet, null, true);
 };
 
 export default generateSystem;

@@ -89,85 +89,17 @@ console.log(system);
 
 let allPlanetsArray = [];
 let allStarsArray = [];
+let allLonePlanetsArray = [];
 
 generateSystem(
   system,
   systemParameters,
   allPlanetsArray,
   allStarsArray,
+  allLonePlanetsArray,
   scene,
   material
 );
-
-/**
- * Navigation
- */
-const nav = document.getElementById("system_nav");
-const starList = document.createElement("ul");
-nav.append(starList);
-
-const navToggle = document.getElementById("nav_toggle");
-navToggle.addEventListener("click", (e) => {
-  nav.classList.contains("hide")
-    ? nav.classList.remove("hide")
-    : nav.classList.add("hide");
-});
-
-allStarsArray.map((star) => {
-  const starListItem = document.createElement("li");
-  const starItem = document.createElement("button");
-  starItem.setAttribute("data-object", star.mesh.name);
-  starItem.setAttribute("class", "nav-button");
-  starItem.append(star.mesh.name);
-
-  starListItem.append(starItem);
-  starList.append(starListItem);
-
-  // console.log(star);
-
-  starItem.addEventListener("click", (e) => {
-    const objectName = e.currentTarget.dataset.object;
-    const object = scene.getObjectByName(objectName);
-    controls.target = object.parent.position;
-  });
-
-  if (star.planets != null) {
-    const planetList = document.createElement("ul");
-    starListItem.append(planetList);
-
-    let planetsArray = [];
-    Array.isArray(star.planets)
-      ? (planetsArray = star.planets)
-      : planetsArray.push(star.planets);
-
-    planetsArray.map((planet) => {
-      console.log(planet);
-      const planetListItem = document.createElement("li");
-
-      let planetName;
-
-      if (Array.isArray(planet.name)) {
-        planetName = planet.name[0]._text;
-      } else {
-        planetName = planet.name._text;
-      }
-
-      const planetItem = document.createElement("button");
-      planetItem.setAttribute("data-object", planetName);
-      planetItem.setAttribute("class", "nav-button");
-      planetItem.append(planetName);
-
-      planetListItem.append(planetItem);
-      planetList.append(planetListItem);
-
-      planetItem.addEventListener("click", (e) => {
-        const objectName = e.currentTarget.dataset.object;
-        const object = scene.getObjectByName(objectName);
-        controls.target = object.position;
-      });
-    });
-  }
-});
 
 /**
  * Sizes
@@ -213,8 +145,10 @@ scene.add(camera);
 const controlParams = {
   orbit: true,
   fly: false,
+  none: false,
   movementSpeed: 1,
   rollSpeed: 0.005,
+  dragToLook: false,
 };
 
 const controlsFolder = gui.addFolder("Camera Controls");
@@ -225,6 +159,14 @@ controlsFolder
   .onChange(function () {
     setChecked("orbit");
   });
+controlsFolder
+  .add(controlParams, "none")
+  .name("None")
+  .listen()
+  .onChange(function () {
+    setChecked("none");
+  });
+
 controlsFolder
   .add(controlParams, "fly")
   .name("Fly")
@@ -257,7 +199,13 @@ controlsFolder
     }
   });
 
-// controlsFolder.add(controlParams, 'pointerlock').name('Pointer Lock').listen().onChange(function(){setChecked("pointerlock")});
+controlsFolder.add(controlParams, "dragToLook").onChange(() => {
+  if (controlParams.dragToLook === true) {
+    controls.dragToLook = true;
+  } else {
+    controls.dragToLook = false;
+  }
+});
 
 function setChecked(prop) {
   for (let param in controlParams) {
@@ -273,7 +221,7 @@ let controls;
 const toggleControl = () => {
   if (controlParams.orbit === true) {
     controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = true;
+    controls.enableDamping = false;
     canvas.classList.add("cursor-grab");
     canvas.classList.remove("cursor-crosshair");
   }
@@ -286,6 +234,8 @@ const toggleControl = () => {
     controls.autoForward = false;
     // controls.dragToLook = true;
     controls.enableDamping = true;
+  }
+  if (controlParams.none === true) {
   }
 };
 
@@ -355,6 +305,243 @@ window.addEventListener("click", () => {
       controls.target = currentIntersect.object.position;
     }
   }
+});
+
+// /**
+//  * Camera fit to object
+//  */
+// const fitCameraToObject = function (
+//   camera,
+//   object,
+//   position,
+//   offset,
+//   controls
+// ) {
+//   offset = offset || 1.25;
+
+//   const boundingBox = new THREE.Box3();
+
+//   // get bounding box of object - this will be used to setup controls and camera
+//   boundingBox.setFromObject(object);
+
+//   const center = boundingBox.getCenter();
+
+//   // const center = position;
+
+//   const size = boundingBox.getSize();
+
+//   // get the max side of the bounding box (fits to width OR height as needed )
+//   const maxDim = Math.max(size.x, size.y, size.z);
+//   const fov = camera.fov * (Math.PI / 180);
+//   let cameraZ = Math.abs((maxDim / 4) * Math.tan(fov * 2));
+
+//   cameraZ *= offset; // zoom out a little so that objects don't fill the screen
+
+//   camera.position.z = cameraZ;
+
+//   const minZ = boundingBox.min.z;
+//   const cameraToFarEdge = minZ < 0 ? -minZ + cameraZ : cameraZ - minZ;
+
+//   camera.far = cameraToFarEdge * 3;
+//   camera.updateProjectionMatrix();
+
+//   if (controls) {
+//     // set camera to rotate around center of loaded object
+//     controls.target = center;
+
+//     // prevent camera from zooming out far enough to create far plane cutoff
+//     controls.maxDistance = cameraToFarEdge * 2;
+
+//     controls.saveState();
+//   } else {
+//     camera.lookAt(center);
+//   }
+// };
+
+// const fitCameraToObject = (object, newTarget) => {
+//   var zoom = controls.target.distanceTo(controls.object.position);
+//   console.log(zoom);
+
+//   const radius = object.geometry.boundingSphere.radius;
+//   var zoomDistance = 50;
+//   //   currDistance = zoom,
+//   //   factor = zoomDistance / currDistance;
+//   // camera.position.x *= factor;
+//   // camera.position.y *= factor;ss
+//   // controls.center.set(0, 0, 0);
+
+//   // camera.position.z = zoom - zoomDistance;
+//   // controls.position - zoom;
+//   // controls.center.set(0, 0, 0);
+//   // controls.zoom0 = 50;
+//   // camera.position(objectPosition);
+
+//   // controls.update();
+
+//   controls.target.copy(newTarget);
+
+//   // camera.position.z = zoomDistance;
+
+//   controls.target.set(newTarget.x, newTarget.y, newTarget.z);
+//   // camera.lookAt(newTarget);
+
+//   // controls.dollyOut(20000);
+//   // controls.update();
+// };
+
+function fitCameraToSelection(
+  camera,
+  newTarget,
+  controls,
+  selection,
+  fitOffset = 1.5
+) {
+  const box = new THREE.Box3();
+
+  const object = selection;
+  box.expandByObject(object);
+
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+
+  const maxSize = Math.max(size.x, size.y, size.z);
+  const fitHeightDistance =
+    maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
+  const fitWidthDistance = fitHeightDistance / camera.aspect;
+  const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
+
+  const direction = controls.target
+    .clone()
+    .sub(camera.position)
+    .normalize()
+    .multiplyScalar(distance);
+
+  // controls.maxDistance = distance * 10;
+  controls.target.copy(newTarget);
+
+  controls.target.set(newTarget.x, newTarget.y, newTarget.z);
+
+  // camera.near = distance / 100;
+  // camera.far = distance * 100;
+  camera.updateProjectionMatrix();
+
+  camera.position.copy(controls.target).sub(direction);
+
+  controls.update();
+}
+
+/**
+ * Navigation
+ */
+const nav = document.getElementById("system_nav");
+const starList = document.createElement("ul");
+nav.append(starList);
+
+const navToggle = document.getElementById("nav_toggle");
+navToggle.addEventListener("click", (e) => {
+  nav.classList.contains("hide")
+    ? nav.classList.remove("hide")
+    : nav.classList.add("hide");
+});
+
+allStarsArray.map((star) => {
+  const starListItem = document.createElement("li");
+  const starItem = document.createElement("button");
+  starItem.setAttribute("data-object", star.mesh.name);
+  starItem.setAttribute("class", "nav-button");
+  starItem.append(star.mesh.name);
+
+  starListItem.append(starItem);
+  starList.append(starListItem);
+
+  // console.log(star);
+
+  starItem.addEventListener("click", (e) => {
+    const starName = e.currentTarget.dataset.object;
+    const star = scene.getObjectByName(starName);
+
+    // controls.target = star.parent.position;
+    // fitCameraToObject(star, star.parent.position);
+    fitCameraToSelection(camera, star.parent.position, controls, star, 1.5);
+  });
+
+  if (star.planets != null) {
+    const planetList = document.createElement("ul");
+    starListItem.append(planetList);
+
+    let planetsArray = [];
+    Array.isArray(star.planets)
+      ? (planetsArray = star.planets)
+      : planetsArray.push(star.planets);
+
+    planetsArray.map((planet) => {
+      console.log(planet);
+      const planetListItem = document.createElement("li");
+
+      let planetName;
+
+      if (Array.isArray(planet.name)) {
+        planetName = planet.name[0]._text;
+      } else {
+        planetName = planet.name._text;
+      }
+
+      const planetItem = document.createElement("button");
+      planetItem.setAttribute("data-object", planetName);
+      planetItem.setAttribute("class", "nav-button");
+      planetItem.append(planetName);
+
+      planetListItem.append(planetItem);
+      planetList.append(planetListItem);
+
+      planetItem.addEventListener("click", (e) => {
+        const planetName = e.currentTarget.dataset.object;
+        const planet = scene.getObjectByName(planetName);
+        // controls.target = planet.position;
+        // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
+        // fitCameraToObject(planet, planet.position);
+        fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+      });
+    });
+  }
+});
+
+const lonePlanetList = document.createElement("ul");
+nav.append(lonePlanetList);
+
+allLonePlanetsArray.map((planet) => {
+  console.log("lone planet", planet);
+  const planetListItem = document.createElement("li");
+
+  let planetName;
+
+  if (Array.isArray(planet.mesh.name)) {
+    planetName = planet.mesh.name[0]._text;
+  } else {
+    if (planet.mesh.name.hasOwnProperty("_text")) {
+      planetName = planet.mesh.name._text;
+    } else {
+      planetName = planet.mesh.name;
+    }
+  }
+
+  const planetItem = document.createElement("button");
+  planetItem.setAttribute("data-object", planetName);
+  planetItem.setAttribute("class", "nav-button");
+  planetItem.append(planetName);
+
+  planetListItem.append(planetItem);
+  lonePlanetList.append(planetListItem);
+
+  planetItem.addEventListener("click", (e) => {
+    const planetNameID = e.currentTarget.dataset.object;
+    const planet = scene.getObjectByName(planetNameID);
+    // controls.target = planet.position;
+    // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
+    // console.log(planet);
+    // fitCameraToObject(planet, planet.position);
+    fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+  });
 });
 
 const tick = () => {
