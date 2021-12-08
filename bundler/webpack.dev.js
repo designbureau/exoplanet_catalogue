@@ -4,6 +4,7 @@ const commonConfiguration = require("./webpack.common.js");
 const ip = require("internal-ip");
 const portFinderSync = require("portfinder-sync");
 
+
 const infoColor = (_message) => {
   return `\u001b[1m\u001b[34m${_message}\u001b[39m\u001b[22m`;
 };
@@ -49,6 +50,16 @@ module.exports = merge(commonConfiguration, {
           domain2
         )}`
       );
+
     },
   },
 });
+
+
+
+// const fs = require("fs");
+// const dir = domain1 + "/data/systems"; 
+// const files = fs.readdirSync(dir);
+// for (const file of files) {
+//   console.log(file);
+// }

@@ -1,0 +1,120 @@
+/**
+ * Navigation
+ */
+
+const GenerateNav = (allStarsArray, allLonePlanetsArray) => {
+
+  const nav = document.getElementById("system_nav");
+  const starList = document.createElement("ul");
+  nav.append(starList);
+
+  const navToggle = document.getElementById("nav_toggle");
+  navToggle.addEventListener("click", (e) => {
+    nav.classList.contains("hide")
+      ? nav.classList.remove("hide")
+      : nav.classList.add("hide");
+  });
+
+  allStarsArray.map((star) => {
+    const starListItem = document.createElement("li");
+    const starItem = document.createElement("button");
+    starItem.setAttribute("data-object", star.mesh.name);
+    starItem.setAttribute("class", "nav-button");
+    starItem.append(star.mesh.name);
+
+    starListItem.append(starItem);
+    starList.append(starListItem);
+
+    // console.log(star);
+
+    starItem.addEventListener("click", (e) => {
+      const starName = e.currentTarget.dataset.object;
+      const star = scene.getObjectByName(starName);
+
+      // controls.target = star.parent.position;
+      // fitCameraToObject(star, star.parent.position);
+      fitCameraToSelection(camera, star.parent.position, controls, star, 1.5);
+    });
+
+    if (star.planets != null) {
+      const planetList = document.createElement("ul");
+      starListItem.append(planetList);
+
+      let planetsArray = [];
+      Array.isArray(star.planets)
+        ? (planetsArray = star.planets)
+        : planetsArray.push(star.planets);
+
+      planetsArray.map((planet) => {
+        console.log(planet);
+        const planetListItem = document.createElement("li");
+
+        let planetName;
+
+        if (Array.isArray(planet.name)) {
+          planetName = planet.name[0]._text;
+        } else {
+          planetName = planet.name._text;
+        }
+
+        const planetItem = document.createElement("button");
+        planetItem.setAttribute("data-object", planetName);
+        planetItem.setAttribute("class", "nav-button");
+        planetItem.append(planetName);
+
+        planetListItem.append(planetItem);
+        planetList.append(planetListItem);
+
+        planetItem.addEventListener("click", (e) => {
+          const planetName = e.currentTarget.dataset.object;
+          const planet = scene.getObjectByName(planetName);
+          // controls.target = planet.position;
+          // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
+          // fitCameraToObject(planet, planet.position);
+          fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+        });
+      });
+    }
+  });
+
+  const lonePlanetList = document.createElement("ul");
+  nav.append(lonePlanetList);
+
+  allLonePlanetsArray.map((planet) => {
+    console.log("lone planet", planet);
+    const planetListItem = document.createElement("li");
+
+    let planetName;
+
+    if (Array.isArray(planet.mesh.name)) {
+      planetName = planet.mesh.name[0]._text;
+    } else {
+      if (planet.mesh.name.hasOwnProperty("_text")) {
+        planetName = planet.mesh.name._text;
+      } else {
+        planetName = planet.mesh.name;
+      }
+    }
+
+    const planetItem = document.createElement("button");
+    planetItem.setAttribute("data-object", planetName);
+    planetItem.setAttribute("class", "nav-button");
+    planetItem.append(planetName);
+
+    planetListItem.append(planetItem);
+    lonePlanetList.append(planetListItem);
+
+    planetItem.addEventListener("click", (e) => {
+      const planetNameID = e.currentTarget.dataset.object;
+      const planet = scene.getObjectByName(planetNameID);
+      // controls.target = planet.position;
+      // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
+      // console.log(planet);
+      // fitCameraToObject(planet, planet.position);
+      fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+    });
+  });
+}
+
+
+export default GenerateNav;

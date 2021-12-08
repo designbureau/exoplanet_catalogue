@@ -15,18 +15,13 @@ import {
   getPeriapsis,
   getSemiMinorAxis,
 } from "./HelperFunctions";
-import generateSystem from "./GenerateSystem";
+import GenerateSystem from "./GenerateSystem";
+import GenerateNav from "./GenerateNav";
 import axios from "axios";
 
-// const fs = require("fs");
-// import fs from "fs";
-// const dir = "/data/systems";
+import systemDirectory from "./systemsDirectory";
 
-// const files = fs.readdirSync(dir);
 
-// for (const file of files) {
-//   console.log(file);
-// }
 
 /**
  * Base
@@ -348,200 +343,118 @@ function fitCameraToSelection(
 }
 
 
-const generateNav = (allStarsArray, allLonePlanetsArray) => {
-    
-  /**
-   * Navigation
-   */
-  
-  const nav = document.getElementById("system_nav");
-  const starList = document.createElement("ul");
-  nav.append(starList);
 
-  const navToggle = document.getElementById("nav_toggle");
-  navToggle.addEventListener("click", (e) => {
-    nav.classList.contains("hide")
-      ? nav.classList.remove("hide")
-      : nav.classList.add("hide");
-  });
+const systemNavToggle = document.getElementById("system_list_nav_toggle");
+const systemsDirectory = systemDirectory();
+const systemNav = document.getElementById("system_list_nav");
+const systemList = document.createElement("ul");
+systemNav.append(systemList);
 
-  allStarsArray.map((star) => {
-    const starListItem = document.createElement("li");
-    const starItem = document.createElement("button");
-    starItem.setAttribute("data-object", star.mesh.name);
-    starItem.setAttribute("class", "nav-button");
-    starItem.append(star.mesh.name);
-
-    starListItem.append(starItem);
-    starList.append(starListItem);
-
-    // console.log(star);
-
-    starItem.addEventListener("click", (e) => {
-      const starName = e.currentTarget.dataset.object;
-      const star = scene.getObjectByName(starName);
-
-      // controls.target = star.parent.position;
-      // fitCameraToObject(star, star.parent.position);
-      fitCameraToSelection(camera, star.parent.position, controls, star, 1.5);
-    });
-
-    if (star.planets != null) {
-      const planetList = document.createElement("ul");
-      starListItem.append(planetList);
-
-      let planetsArray = [];
-      Array.isArray(star.planets)
-        ? (planetsArray = star.planets)
-        : planetsArray.push(star.planets);
-
-      planetsArray.map((planet) => {
-        console.log(planet);
-        const planetListItem = document.createElement("li");
-
-        let planetName;
-
-        if (Array.isArray(planet.name)) {
-          planetName = planet.name[0]._text;
-        } else {
-          planetName = planet.name._text;
-        }
-
-        const planetItem = document.createElement("button");
-        planetItem.setAttribute("data-object", planetName);
-        planetItem.setAttribute("class", "nav-button");
-        planetItem.append(planetName);
-
-        planetListItem.append(planetItem);
-        planetList.append(planetListItem);
-
-        planetItem.addEventListener("click", (e) => {
-          const planetName = e.currentTarget.dataset.object;
-          const planet = scene.getObjectByName(planetName);
-          // controls.target = planet.position;
-          // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
-          // fitCameraToObject(planet, planet.position);
-          fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
-        });
-      });
-    }
-  });
-
-  const lonePlanetList = document.createElement("ul");
-  nav.append(lonePlanetList);
-
-  allLonePlanetsArray.map((planet) => {
-    console.log("lone planet", planet);
-    const planetListItem = document.createElement("li");
-
-    let planetName;
-
-    if (Array.isArray(planet.mesh.name)) {
-      planetName = planet.mesh.name[0]._text;
-    } else {
-      if (planet.mesh.name.hasOwnProperty("_text")) {
-        planetName = planet.mesh.name._text;
-      } else {
-        planetName = planet.mesh.name;
-      }
-    }
-
-    const planetItem = document.createElement("button");
-    planetItem.setAttribute("data-object", planetName);
-    planetItem.setAttribute("class", "nav-button");
-    planetItem.append(planetName);
-
-    planetListItem.append(planetItem);
-    lonePlanetList.append(planetListItem);
-
-    planetItem.addEventListener("click", (e) => {
-      const planetNameID = e.currentTarget.dataset.object;
-      const planet = scene.getObjectByName(planetNameID);
-      // controls.target = planet.position;
-      // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
-      // console.log(planet);
-      // fitCameraToObject(planet, planet.position);
-      fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
-    });
-  });
-  }
-
-
-
-
-
-axios.get("/data/systems/Kepler-442.xml").then((response) => {
-  let allPlanetsArray = [];
-  let allStarsArray = [];
-  let allLonePlanetsArray = [];
-
-  let xml;
-  let system;
-  xml = response.data;
-  system = xmljs.xml2js(xml, options);
-
-  generateSystem(
-    system,
-    systemParameters,
-    allPlanetsArray,
-    allStarsArray,
-    allLonePlanetsArray,
-    scene,
-    material
-  );
-
-  generateNav(allStarsArray,allLonePlanetsArray);
-
-
-  const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-
-    const delta = clock.getDelta();
-
-    allPlanetsArray.map((planet) => {
-      const ellipse = getEllipse(planet.semimajoraxis, planet.eccentricity);
-
-      planet.mesh.position.x =
-        ellipse.xRadius *
-        Math.cos((elapsedTime / planet.period) * systemParameters.speed);
-
-      planet.mesh.position.y =
-        ellipse.yRadius *
-        Math.sin((elapsedTime / planet.period) * systemParameters.speed);
-    });
-
-    // Render
-    // renderer.render(scene, camera);
-    if (params.trails) {
-      composer.render();
-    } else {
-      renderer.render(scene, camera);
-    }
-
-    // Update controls
-    controls.update(elapsedTime * 0.01);
-
-    // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera(mouse, camera);
-
-    // calculate objects intersecting the picking ray
-    const intersects = raycaster.intersectObjects(scene.children);
-
-    if (intersects.length) {
-      if (!currentIntersect) {
-        // console.log("mouse enter");
-      }
-      currentIntersect = intersects[0];
-    } else {
-      if (currentIntersect) {
-        // console.log("mouse leave");
-      }
-      currentIntersect = null;
-    }
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick);
-  };
-
-  tick();
+systemNavToggle.addEventListener("click", (e) => {
+  systemNav.classList.contains("hide")
+  ? systemNav.classList.remove("hide")
+  : systemNav.classList.add("hide");
 });
+
+
+
+systemsDirectory.map((system) => {
+  const systemListItem = document.createElement("li");
+  const systemItem = document.createElement("button");
+  systemItem.setAttribute("data-system", system);
+  systemItem.setAttribute("class", "system-button");
+  systemItem.append(system.replace(".xml", ""));
+  
+  systemListItem.append(systemItem);
+  systemList.append(systemListItem);
+
+  systemItem.addEventListener("click", (e) => {
+    const system = e.currentTarget.dataset.system;
+    console.log(system);
+    loadSystem(system);
+  });
+});
+
+
+
+const loadSystem = (system) => {
+  const url = "/data/systems/" + system;
+
+  axios.get(url).then((response) => {
+    let allPlanetsArray = [];
+    let allStarsArray = [];
+    let allLonePlanetsArray = [];
+
+    let xml;
+    let system;
+    xml = response.data;
+    system = xmljs.xml2js(xml, options);
+
+    GenerateSystem(
+      system,
+      systemParameters,
+      allPlanetsArray,
+      allStarsArray,
+      allLonePlanetsArray,
+      scene,
+      material
+    );
+    GenerateNav(allStarsArray,allLonePlanetsArray);
+
+
+    const tick = () => {
+      const elapsedTime = clock.getElapsedTime();
+
+      const delta = clock.getDelta();
+
+      allPlanetsArray.map((planet) => {
+        const ellipse = getEllipse(planet.semimajoraxis, planet.eccentricity);
+
+        planet.mesh.position.x =
+          ellipse.xRadius *
+          Math.cos((elapsedTime / planet.period) * systemParameters.speed);
+
+        planet.mesh.position.y =
+          ellipse.yRadius *
+          Math.sin((elapsedTime / planet.period) * systemParameters.speed);
+      });
+
+      // Render
+      // renderer.render(scene, camera);
+      if (params.trails) {
+        composer.render();
+      } else {
+        renderer.render(scene, camera);
+      }
+
+      // Update controls
+      controls.update(elapsedTime * 0.01);
+
+      // update the picking ray with the camera and mouse position
+      raycaster.setFromCamera(mouse, camera);
+
+      // calculate objects intersecting the picking ray
+      const intersects = raycaster.intersectObjects(scene.children);
+
+      if (intersects.length) {
+        if (!currentIntersect) {
+          // console.log("mouse enter");
+        }
+        currentIntersect = intersects[0];
+      } else {
+        if (currentIntersect) {
+          // console.log("mouse leave");
+        }
+        currentIntersect = null;
+      }
+
+      // Call tick again on the next frame
+      window.requestAnimationFrame(tick);
+    };
+
+    tick();
+  });
+}
+
+
+

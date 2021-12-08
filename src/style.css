@@ -40,6 +40,35 @@ body {
   --text: white;
 }
 
+#system_list_nav_toggle {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: 99;
+}
+#system_list_nav {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: 999;
+  width: 25vw;
+  padding: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  background: #111;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+#system_list_nav.hide {
+  transform: translateX(-100%);
+}
+
+#system_list_nav ul {
+  list-style: none;
+}
+
+#system_list_nav_toggle,
+#system_list_nav button,
 #system_nav button {
   color: var(--text);
   padding: 0;
