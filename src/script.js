@@ -21,8 +21,6 @@ import axios from "axios";
 
 import systemDirectory from "./systemsDirectory";
 
-
-
 /**
  * Base
  */
@@ -297,53 +295,6 @@ window.addEventListener("click", () => {
   }
 });
 
-// /**
-//  * Camera fit to object
-//  */
-
-function fitCameraToSelection(
-  camera,
-  newTarget,
-  controls,
-  selection,
-  fitOffset = 1.5
-) {
-  const box = new THREE.Box3();
-
-  const object = selection;
-  box.expandByObject(object);
-
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
-
-  const maxSize = Math.max(size.x, size.y, size.z);
-  const fitHeightDistance =
-    maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
-  const fitWidthDistance = fitHeightDistance / camera.aspect;
-  const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
-
-  const direction = controls.target
-    .clone()
-    .sub(camera.position)
-    .normalize()
-    .multiplyScalar(distance);
-
-  // controls.maxDistance = distance * 10;
-  controls.target.copy(newTarget);
-
-  controls.target.set(newTarget.x, newTarget.y, newTarget.z);
-
-  // camera.near = distance / 100;
-  // camera.far = distance * 100;
-  camera.updateProjectionMatrix();
-
-  camera.position.copy(controls.target).sub(direction);
-
-  controls.update();
-}
-
-
-
 const systemNavToggle = document.getElementById("system_list_nav_toggle");
 const systemsDirectory = systemDirectory();
 const systemNav = document.getElementById("system_list_nav");
@@ -352,11 +303,9 @@ systemNav.append(systemList);
 
 systemNavToggle.addEventListener("click", (e) => {
   systemNav.classList.contains("hide")
-  ? systemNav.classList.remove("hide")
-  : systemNav.classList.add("hide");
+    ? systemNav.classList.remove("hide")
+    : systemNav.classList.add("hide");
 });
-
-
 
 systemsDirectory.map((system) => {
   const systemListItem = document.createElement("li");
@@ -364,7 +313,7 @@ systemsDirectory.map((system) => {
   systemItem.setAttribute("data-system", system);
   systemItem.setAttribute("class", "system-button");
   systemItem.append(system.replace(".xml", ""));
-  
+
   systemListItem.append(systemItem);
   systemList.append(systemListItem);
 
@@ -375,9 +324,18 @@ systemsDirectory.map((system) => {
   });
 });
 
-
+const nav = document.getElementById("system_nav");
+const navToggle = document.getElementById("nav_toggle");
+navToggle.addEventListener("click", (e) => {
+  nav.classList.contains("hide")
+    ? nav.classList.remove("hide")
+    : nav.classList.add("hide");
+});
 
 const loadSystem = (system) => {
+  scene.clear();
+  systemNav.classList.add("hide");
+
   const url = "/data/systems/" + system;
 
   axios.get(url).then((response) => {
@@ -399,8 +357,7 @@ const loadSystem = (system) => {
       scene,
       material
     );
-    GenerateNav(allStarsArray,allLonePlanetsArray);
-
+    GenerateNav(allStarsArray, allLonePlanetsArray, scene, camera, controls);
 
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
@@ -454,7 +411,4 @@ const loadSystem = (system) => {
 
     tick();
   });
-}
-
-
-
+};

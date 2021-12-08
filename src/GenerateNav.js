@@ -2,18 +2,22 @@
  * Navigation
  */
 
-const GenerateNav = (allStarsArray, allLonePlanetsArray) => {
+import { fitCameraToSelection } from "./CameraUtilities";
 
-  const nav = document.getElementById("system_nav");
+const GenerateNav = (
+  allStarsArray,
+  allLonePlanetsArray,
+  scene,
+  camera,
+  controls
+) => {
+  const nav = document.getElementById("nav_container");
+
+  nav.innerHTML = "";
+
   const starList = document.createElement("ul");
+  starList.setAttribute("id", "star_list");
   nav.append(starList);
-
-  const navToggle = document.getElementById("nav_toggle");
-  navToggle.addEventListener("click", (e) => {
-    nav.classList.contains("hide")
-      ? nav.classList.remove("hide")
-      : nav.classList.add("hide");
-  });
 
   allStarsArray.map((star) => {
     const starListItem = document.createElement("li");
@@ -114,7 +118,6 @@ const GenerateNav = (allStarsArray, allLonePlanetsArray) => {
       fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
     });
   });
-}
-
+};
 
 export default GenerateNav;

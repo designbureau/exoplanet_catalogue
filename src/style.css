@@ -52,7 +52,7 @@ body {
   left: 0;
   z-index: 999;
   width: 25vw;
-  padding: 20px;
+  padding: 12px;
   border-right: 1px solid rgba(255, 255, 255, 0.05);
   background: #111;
   overflow-y: scroll;
@@ -79,6 +79,14 @@ body {
   /* text-transform: uppercase; */
   font-size: 11px;
 }
+
+#system_list_nav_toggle {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  font-weight: bold;
+}
+
 #system_nav ul {
   margin-left: 12px;
   list-style: none;
