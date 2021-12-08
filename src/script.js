@@ -19,14 +19,14 @@ import generateSystem from "./GenerateSystem";
 import axios from "axios";
 
 // const fs = require("fs");
-import fs from "fs";
-const dir = "/data/systems";
+// import fs from "fs";
+// const dir = "/data/systems";
 
-const files = fs.readdirSync(dir);
+// const files = fs.readdirSync(dir);
 
-for (const file of files) {
-  console.log(file);
-}
+// for (const file of files) {
+//   console.log(file);
+// }
 
 /**
  * Base
@@ -347,30 +347,13 @@ function fitCameraToSelection(
   controls.update();
 }
 
-axios.get("/data/systems/XO-2.xml").then((response) => {
-  let allPlanetsArray = [];
-  let allStarsArray = [];
-  let allLonePlanetsArray = [];
 
-  let xml;
-  let system;
-  xml = response.data;
-  system = xmljs.xml2js(xml, options);
-
-  generateSystem(
-    system,
-    systemParameters,
-    allPlanetsArray,
-    allStarsArray,
-    allLonePlanetsArray,
-    scene,
-    material
-  );
-
+const generateNav = (allStarsArray, allLonePlanetsArray) => {
+    
   /**
    * Navigation
    */
-  const generateNav = (allStarsArray, aallLonePlanetsArrayll) => {};
+  
   const nav = document.getElementById("system_nav");
   const starList = document.createElement("ul");
   nav.append(starList);
@@ -481,6 +464,34 @@ axios.get("/data/systems/XO-2.xml").then((response) => {
       fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
     });
   });
+  }
+
+
+
+
+
+axios.get("/data/systems/Kepler-442.xml").then((response) => {
+  let allPlanetsArray = [];
+  let allStarsArray = [];
+  let allLonePlanetsArray = [];
+
+  let xml;
+  let system;
+  xml = response.data;
+  system = xmljs.xml2js(xml, options);
+
+  generateSystem(
+    system,
+    systemParameters,
+    allPlanetsArray,
+    allStarsArray,
+    allLonePlanetsArray,
+    scene,
+    material
+  );
+
+  generateNav(allStarsArray,allLonePlanetsArray);
+
 
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
