@@ -19,7 +19,9 @@ const GenerateNav = (
   starList.setAttribute("id", "star_list");
   nav.append(starList);
 
-  allStarsArray.map((star) => {
+  allStarsArray.map((star, i) => {
+
+    
     const starListItem = document.createElement("li");
     const starItem = document.createElement("button");
     starItem.setAttribute("data-object", star.mesh.name);
@@ -28,6 +30,12 @@ const GenerateNav = (
 
     starListItem.append(starItem);
     starList.append(starListItem);
+
+
+    if(i == 0){
+      const starName = scene.getObjectByName(star.mesh.name);
+      fitCameraToSelection(camera, starName.parent.position, controls, starName, 1.5);
+    }
 
     // console.log(star);
 
