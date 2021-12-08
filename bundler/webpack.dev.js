@@ -16,7 +16,7 @@ module.exports = merge(commonConfiguration, {
     rules: [
       {
         test: /\.xml$/i,
-        use: 'raw-loader',
+        use: "raw-loader",
       },
     ],
   },
