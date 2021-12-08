@@ -2,13 +2,11 @@ import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
-import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import * as dat from "lil-gui";
 import * as xmljs from "xml-js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
-import StarSystem from "./StarSystem";
 import {
   getEllipse,
   getApoapsis,
@@ -36,36 +34,58 @@ const canvas = document.querySelector("canvas.webgl");
 const scene = new THREE.Scene();
 
 /**
+ * Lights
+ */
+// Ambient light
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+// // gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
+// scene.add(ambientLight);
+
+// // Directional light
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
+// directionalLight.position.set(-1, 1.5, 2.5);
+// // gui.add(directionalLight, "intensity").min(0).max(1).step(0.001);
+// // gui.add(directionalLight.position, "x").min(-5).max(5).step(0.001);
+// // gui.add(directionalLight.position, "y").min(-5).max(5).step(0.001);
+// // gui.add(directionalLight.position, "z").min(-5).max(5).step(0.001);
+// scene.add(directionalLight);
+
+// const pointLight = new THREE.PointLight(0xffffff, 1, 5000);
+// pointLight.position.set(0, 0, 0);
+
+// gui.add(pointLight, "intensity").min(0).max(1).step(0.001);
+// gui.add(pointLight, "distance").min(0).max(100000).step(1);
+// gui.add(pointLight, "decay").min(0).max(1).step(0.001);
+
+// scene.add(pointLight);
+
+/**
  * textures
  */
 
 const textureLoader = new THREE.TextureLoader();
 
 /**
- * Lights
- */
-// Ambient light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-// gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
-scene.add(ambientLight);
-
-// Directional light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
-directionalLight.position.set(-1, 1.5, 2.5);
-// gui.add(directionalLight, "intensity").min(0).max(1).step(0.001);
-// gui.add(directionalLight.position, "x").min(-5).max(5).step(0.001);
-// gui.add(directionalLight.position, "y").min(-5).max(5).step(0.001);
-// gui.add(directionalLight.position, "z").min(-5).max(5).step(0.001);
-scene.add(directionalLight);
-
-/**
  * Materials
  */
-const material = new THREE.MeshNormalMaterial();
+// const material = new THREE.MeshNormalMaterial();
+const material = new THREE.MeshStandardMaterial();
 // material.wireframe = true;
 // material.roughness = 0.7;
 // gui.add(material, 'metalness').min(0).max(1).step(0.001)
 // gui.add(material, 'roughness').min(0).max(1).step(0.001)
+
+const starNormalTexture = textureLoader.load("/textures/8k_sun.jpeg");
+
+// starNormalTexture.minFilter = THREE.NearestFilter;
+// starNormalTexture.magFilter = THREE.NearestFilter;
+
+const color = new THREE.Color(0xff0000);
+
+const starMaterial = new THREE.MeshBasicMaterial({
+  map: starNormalTexture,
+  // color: color,
+});
 
 /**
  * Objects
@@ -355,7 +375,8 @@ const loadSystem = (system) => {
       allStarsArray,
       allLonePlanetsArray,
       scene,
-      material
+      material,
+      starMaterial
     );
     GenerateNav(allStarsArray, allLonePlanetsArray, scene, camera, controls);
 
@@ -363,6 +384,10 @@ const loadSystem = (system) => {
       const elapsedTime = clock.getElapsedTime();
 
       const delta = clock.getDelta();
+
+      allStarsArray.map((star) => {
+        star.mesh.rotation.y = Math.PI * 0.005 * elapsedTime;
+      });
 
       allPlanetsArray.map((planet) => {
         const ellipse = getEllipse(planet.semimajoraxis, planet.eccentricity);

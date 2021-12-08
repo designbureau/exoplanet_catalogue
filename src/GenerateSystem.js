@@ -13,7 +13,8 @@ const generateSystem = (
   allStarsArray,
   allLonePlanetsArray,
   scene,
-  material
+  material,
+  starMaterial
 ) => {
   //jupiter:earth radius = 11.209
   //jupiter:earth mass = 318
@@ -27,6 +28,13 @@ const generateSystem = (
   const defaultBinarySeparation = 20; //known average
   const defaultSemimajoraxis = 1;
   let adjustedAU = au * systemParameters.distance;
+
+  /**
+   * Lights
+   */
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.01);
+  // gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
+  scene.add(ambientLight);
 
   /**
    * Planet Renderer
@@ -66,8 +74,10 @@ const generateSystem = (
 
       // upperlimit
 
+      // material.wireframe = true;
+
       const planetMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 64, 64),
+        new THREE.SphereBufferGeometry(radius, 64, 64),
         material
       );
 
@@ -96,12 +106,12 @@ const generateSystem = (
       } else {
         eccentricity = 0;
       }
-      console.log(
-        "eccentricity:",
-        eccentricity,
-        "semimajoraxis:",
-        semimajoraxis
-      );
+      // console.log(
+      //   "eccentricity:",
+      //   eccentricity,
+      //   "semimajoraxis:",
+      //   semimajoraxis
+      // );
 
       if (planet.hasOwnProperty("period")) {
         if (planet.period.hasOwnProperty("_text")) {
@@ -127,7 +137,7 @@ const generateSystem = (
       planetMesh.name = name;
       planetMesh.objectType = "planet";
 
-      console.log("planet", planetMesh);
+      // console.log("planet", planetMesh);
 
       const ellipse = getEllipse(semimajoraxis, eccentricity);
 
@@ -153,7 +163,7 @@ const generateSystem = (
       const orbitEllipse = new THREE.Line(geometry, orbitMaterial);
 
       orbitEllipse.name = name + " orbit";
-      console.log(orbitEllipse);
+      // console.log(orbitEllipse);
 
       let orbitsGroup = new THREE.Group();
       orbitsGroup.add(planetMesh, orbitEllipse);
@@ -161,7 +171,7 @@ const generateSystem = (
       orbitsGroup.rotation.x = inclination / 90;
       // console.log("inclination", inclination);
 
-      console.log(orbitsGroup);
+      // console.log(orbitsGroup);
 
       allPlanetsArray.push({
         mesh: planetMesh,
@@ -209,8 +219,8 @@ const generateSystem = (
         : "star-" + i;
 
       const starMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(starRadius * solRadius, 64, 64),
-        material
+        new THREE.SphereBufferGeometry(starRadius * solRadius, 64, 64),
+        starMaterial
       );
 
       let starGroup = new THREE.Group();
@@ -218,11 +228,15 @@ const generateSystem = (
       starMesh.name = name;
       starMesh.objectType = "star";
 
-      console.log("star", starMesh);
+      // console.log("star", starMesh);
+
+      const pointLight = new THREE.PointLight(0xffffff, 1, 10000);
+      pointLight.position.set(0, 0, 0);
+      starGroup.add(pointLight);
 
       starGroup.name = name + " group";
 
-      console.log(starGroup);
+      // console.log(starGroup);
 
       //TODO: think about this some more.
       starGroup.position.x = parseFloat(separation) / starsArraySize + i * 215;
@@ -268,7 +282,7 @@ const generateSystem = (
       ? (binarySemimajorAxis = parseFloat(binary.semimajoraxis._text))
       : (binarySemimajorAxis = separation);
 
-    console.log(binarySemimajorAxis);
+    // console.log(binarySemimajorAxis);
 
     let binaryGroup = new THREE.Group();
 
