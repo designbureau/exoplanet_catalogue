@@ -2,6 +2,7 @@
 //  * Camera fit to object
 //  */
 import * as THREE from "three";
+import { Vector3 } from "three";
 
 export function fitCameraToSelection(
   camera,
@@ -40,6 +41,7 @@ export function fitCameraToSelection(
   camera.updateProjectionMatrix();
 
   camera.position.copy(controls.target).sub(direction);
+  controls.target = new Vector3(newTarget.x, newTarget.y, newTarget.z);
 
   controls.update();
 }

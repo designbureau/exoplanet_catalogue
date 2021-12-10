@@ -9,7 +9,8 @@ const GenerateNav = (
   allLonePlanetsArray,
   scene,
   camera,
-  controls
+  controls,
+  currentTargetObject
 ) => {
   const nav = document.getElementById("nav_container");
 
@@ -20,8 +21,6 @@ const GenerateNav = (
   nav.append(starList);
 
   allStarsArray.map((star, i) => {
-
-    
     const starListItem = document.createElement("li");
     const starItem = document.createElement("button");
     starItem.setAttribute("data-object", star.mesh.name);
@@ -31,10 +30,15 @@ const GenerateNav = (
     starListItem.append(starItem);
     starList.append(starListItem);
 
-
-    if(i == 0){
+    if (i == 0) {
       const starName = scene.getObjectByName(star.mesh.name);
-      fitCameraToSelection(camera, starName.parent.position, controls, starName, 1.5);
+      fitCameraToSelection(
+        camera,
+        starName.parent.position,
+        controls,
+        starName,
+        1.5
+      );
     }
 
     // console.log(star);
@@ -46,6 +50,7 @@ const GenerateNav = (
       // controls.target = star.parent.position;
       // fitCameraToObject(star, star.parent.position);
       fitCameraToSelection(camera, star.parent.position, controls, star, 1.5);
+      currentTargetObject.push(star);
     });
 
     if (star.planets != null) {
@@ -84,6 +89,7 @@ const GenerateNav = (
           // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
           // fitCameraToObject(planet, planet.position);
           fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+          currentTargetObject.push(planet);
         });
       });
     }
@@ -124,6 +130,7 @@ const GenerateNav = (
       // console.log(planet);
       // fitCameraToObject(planet, planet.position);
       fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+      currentTargetObject.push(planet);
     });
   });
 };

@@ -16,7 +16,6 @@ import {
 import GenerateSystem from "./GenerateSystem";
 import GenerateNav from "./GenerateNav";
 import axios from "axios";
-
 import systemDirectory from "./systemsDirectory";
 
 /**
@@ -64,41 +63,24 @@ const scene = new THREE.Scene();
  */
 
 const textureLoader = new THREE.TextureLoader();
-
-/**
- * Materials
- */
-// const material = new THREE.MeshNormalMaterial();
-const material = new THREE.MeshStandardMaterial();
-// material.wireframe = true;
-// material.roughness = 0.7;
-// gui.add(material, 'metalness').min(0).max(1).step(0.001)
-// gui.add(material, 'roughness').min(0).max(1).step(0.001)
-
-const starNormalTexture = textureLoader.load("/textures/8k_sun.jpeg");
-
-// starNormalTexture.minFilter = THREE.NearestFilter;
-// starNormalTexture.magFilter = THREE.NearestFilter;
-
-const color = new THREE.Color(0xff0000);
-
-const starMaterial = new THREE.MeshBasicMaterial({
-  map: starNormalTexture,
-  // color: color,
+const galaxyNormalTexture = textureLoader.load(
+  "/textures/8k_stars_milky_way.jpeg"
+);
+const galaxyMaterial = new THREE.MeshBasicMaterial({
+  map: galaxyNormalTexture,
 });
-
 /**
  * Objects
  */
 
 const systemParameters = {};
 systemParameters.distance = 1;
-systemParameters.speed = 0.01;
+systemParameters.speed = 0.005;
 gui
   .add(systemParameters, "speed")
   .name("Orbit Speed")
   .min(0)
-  .max(0.1)
+  .max(0.5)
   .step(0.001);
 
 var options = {
@@ -374,11 +356,19 @@ const loadSystem = (system) => {
       allPlanetsArray,
       allStarsArray,
       allLonePlanetsArray,
-      scene,
-      material,
-      starMaterial
+      scene
     );
-    GenerateNav(allStarsArray, allLonePlanetsArray, scene, camera, controls);
+
+    let currentTargetObject = [];
+
+    GenerateNav(
+      allStarsArray,
+      allLonePlanetsArray,
+      scene,
+      camera,
+      controls,
+      currentTargetObject
+    );
 
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
@@ -389,7 +379,7 @@ const loadSystem = (system) => {
         star.mesh.rotation.y = Math.PI * 0.005 * elapsedTime;
       });
 
-      allPlanetsArray.map((planet) => {
+      allPlanetsArray.map((planet, i) => {
         const ellipse = getEllipse(planet.semimajoraxis, planet.eccentricity);
 
         planet.mesh.position.x =
@@ -399,6 +389,12 @@ const loadSystem = (system) => {
         planet.mesh.position.y =
           ellipse.yRadius *
           Math.sin((elapsedTime / planet.period) * systemParameters.speed);
+
+        planet.mesh.rotation.y = Math.PI * 0.005 * elapsedTime;
+
+        // if (currentTargetObject[0] == planet.mesh) {
+        //   camera.lookAt(planet.mesh.position);
+        // }
       });
 
       // Render
@@ -410,6 +406,9 @@ const loadSystem = (system) => {
       }
 
       // Update controls
+
+      // console.log(currentTargetObject);
+
       controls.update(elapsedTime * 0.01);
 
       // update the picking ray with the camera and mouse position

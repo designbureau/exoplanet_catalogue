@@ -6,15 +6,92 @@ import {
   getSemiMinorAxis,
 } from "./HelperFunctions";
 
+/**
+ * textures
+ */
+
+const textureLoader = new THREE.TextureLoader();
+const starNormalTexture = textureLoader.load("/textures/8k_sun.jpeg");
+const uranusNormalTexture = textureLoader.load("/textures/2k_uranus.jpeg");
+const venusNormalTexture = textureLoader.load(
+  "/textures/4k_venus_atmosphere.jpeg"
+);
+const neptuneNormalTexture = textureLoader.load("/textures/2k_neptune.jpeg");
+const mercuryNormalTexture = textureLoader.load("/textures/8k_mercury.jpeg");
+const jupiterNormalTexture = textureLoader.load("/textures/8k_jupiter.jpeg");
+
+/**
+ * Materials
+ */
+// const material = new THREE.MeshNormalMaterial();
+const material = new THREE.MeshStandardMaterial();
+// material.wireframe = true;
+// material.roughness = 0.7;
+// gui.add(material, 'metalness').min(0).max(1).step(0.001)
+// gui.add(material, 'roughness').min(0).max(1).step(0.001)
+
+let planetMaterial = material;
+
+const starMaterial = new THREE.MeshBasicMaterial({
+  map: starNormalTexture,
+});
+
+const jupiterMaterial = new THREE.MeshStandardMaterial({
+  map: jupiterNormalTexture,
+});
+
+const neptuneMaterial = new THREE.MeshStandardMaterial({
+  map: neptuneNormalTexture,
+});
+
+const venusMaterial = new THREE.MeshStandardMaterial({
+  map: venusNormalTexture,
+});
+
+const uranusMaterial = new THREE.MeshStandardMaterial({
+  map: uranusNormalTexture,
+});
+
+const mercuryMaterial = new THREE.MeshStandardMaterial({
+  map: mercuryNormalTexture,
+});
+
+// Gas Giant
+// A giant planet composed mainly of gas
+
+// Super-Earth
+// A potentially rocky world, larger than Earth
+
+// Neptune-like
+// Gaseous worlds around the size of Neptune
+
+// Terrestrial
+// A rocky world outside our solar system.
+
+const setPlanetMaterial = (radius) => {
+  let material = mercuryMaterial;
+  if (radius > 0.05 && radius <= 0.2) {
+    material = venusMaterial;
+  }
+  if (radius > 0.2 && radius <= 0.5) {
+    material = uranusMaterial;
+  }
+  if (radius > 0.5 && radius < 1) {
+    material = neptuneMaterial;
+  }
+  if (radius >= 1) {
+    material = jupiterMaterial;
+  }
+  return material;
+};
+
 const generateSystem = (
   system,
   systemParameters,
   allPlanetsArray,
   allStarsArray,
   allLonePlanetsArray,
-  scene,
-  material,
-  starMaterial
+  scene
 ) => {
   //jupiter:earth radius = 11.209
   //jupiter:earth mass = 318
@@ -72,13 +149,14 @@ const generateSystem = (
         radius = 1;
       }
 
+      planetMaterial = setPlanetMaterial(radius);
       // upperlimit
 
       // material.wireframe = true;
 
       const planetMesh = new THREE.Mesh(
         new THREE.SphereBufferGeometry(radius, 64, 64),
-        material
+        planetMaterial
       );
 
       if (planet.hasOwnProperty("semimajoraxis")) {
@@ -138,6 +216,8 @@ const generateSystem = (
       planetMesh.objectType = "planet";
 
       // console.log("planet", planetMesh);
+
+      planetMesh.rotation.x = Math.PI * 0.5;
 
       const ellipse = getEllipse(semimajoraxis, eccentricity);
 
