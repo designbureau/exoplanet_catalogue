@@ -278,7 +278,12 @@ const generateSystem = (
   /**
    * Star Renderer
    */
-  const renderStar = (star, separation = 0, binaryGroup = null) => {
+  const renderStar = (
+    star,
+    separation = 0,
+    binaryGroup = null,
+    distance = null
+  ) => {
     let starsArray = [];
     Array.isArray(star) ? (starsArray = star) : starsArray.push(star);
 
@@ -323,7 +328,107 @@ const generateSystem = (
       // starGroup.position.x = parseFloat(separation);
       // starGroup.position.x = parseFloat(separation) + i * adjustedAU;
 
-      starGroup.add(starMesh);
+      /**
+       * Habitable Zone
+       */
+      console.log("system details", system);
+
+      //Distance to Sun (should be earth?)
+      let distance;
+      system.hasOwnProperty("distance")
+        ? (distance = parseFloat(system.distance._text))
+        : (distance = 10); //arbitray assingment
+
+      //Spectral type
+      let spectraltype;
+      star.hasOwnProperty("spectraltype")
+        ? (spectraltype = star.spectraltype._text[0])
+        : (spectraltype = null);
+
+      //Visual Magnitude
+      let apparentMagnitude;
+      star.hasOwnProperty("magV")
+        ? (apparentMagnitude = parseFloat(star.magV._text))
+        : (apparentMagnitude = 5); //arbitray assingment
+
+      console.log("spectralType", spectraltype);
+
+      let bc = -0;
+      const bolometricCorrection = {
+        B: -2.0,
+        A: -0.3,
+        F: -0.15,
+        G: -0.4,
+        K: -0.8,
+        M: -2.0,
+      };
+      if (spectraltype != null) {
+        bc = bolometricCorrection[spectraltype];
+        console.log("BC", bc);
+      }
+
+      let Mv, mv, Mbol, Lstar;
+      mv = apparentMagnitude;
+
+      // Stage 1: Estimate the host star’s absolute luminosity based on the star’s apparent visual magnitude (three steps)
+
+      //1. Calculate absolute visual magnitude
+      Mv = mv - 5 * (Math.log10(distance) - 1);
+
+      console.log("Mv", Mv);
+
+      //2. Calculate bolometric magnitude
+      Mbol = Mv + bc;
+      console.log("Mbol", Mbol);
+
+      // 3. Calculate absolute luminosity
+      // Where:
+      // Lstar/Lsun = the absolute luminosity of the host star in terms of the absolute luminosity of the sun
+      // Mbol star = the bolometric magnitude of the host star
+      // Mbol sun = the bolometric magnitude of the sun = 4.72
+      // 2.5 is a constant value used for comparing stellar luminosities -- known as "Pogson's Ratio."
+
+      Lstar = Math.pow(10, (Mbol - 4.72) / -2.5);
+
+      console.log("Lstar", Lstar);
+
+      // Stage 2: Approximate the radii of the host star’s habitable zone boundaries
+
+      // Where:
+      // This method approximates habitable zone radii using stellar luminosity and stellar flux following methods presented by Whitmire et al., 1996, cited below.
+      // ri = the inner boundary of the habitable zone in astronomical units (AU)
+      // ro = the outer boundary of the habitable zone in astronomical units (AU)
+      // Lstar is the absolute luminosity of the star
+      // 1.1 is a constant value representing stellar flux at the inner radius (based on Kasting et al., 1993, cited below; Whitmire et al., 1996, cited below)
+      // 0.53 is a constant value representing stellar flux at the outer radius (based on Kasting et al., 1993, cited below; Whitmire et al., 1996., cited below)
+
+      let innerRadius, outerRadius;
+
+      innerRadius = Math.sqrt(Lstar / 1.1) * adjustedAU;
+      outerRadius = Math.sqrt(Lstar / 0.53) * adjustedAU;
+
+      console.log("innerRadius", innerRadius);
+      console.log("outerRadius", outerRadius);
+
+      const habitableZoneGeometry = new THREE.RingGeometry(
+        innerRadius,
+        outerRadius,
+        128
+      );
+      const habitableZoneMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        side: THREE.DoubleSide,
+      });
+      habitableZoneMaterial.transparent = true;
+      habitableZoneMaterial.opacity = 0.1;
+      const habitableZoneMesh = new THREE.Mesh(
+        habitableZoneGeometry,
+        habitableZoneMaterial
+      );
+      //Z fighting fix needed for binaries
+      // habitableZoneMesh.rotation.x = Math.PI * 0.001 * i;
+
+      starGroup.add(starMesh, habitableZoneMesh);
 
       if (binaryGroup == null) {
         scene.add(starGroup);
