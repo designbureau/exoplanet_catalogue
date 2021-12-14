@@ -10,7 +10,8 @@ const GenerateNav = (
   scene,
   camera,
   controls,
-  currentTargetObject
+  currentTargetObject,
+  systemParameters
 ) => {
   const nav = document.getElementById("nav_container");
 
@@ -37,7 +38,8 @@ const GenerateNav = (
         starName.parent.position,
         controls,
         starName,
-        1.5
+        1.5,
+        systemParameters
       );
     }
 
@@ -49,7 +51,14 @@ const GenerateNav = (
 
       // controls.target = star.parent.position;
       // fitCameraToObject(star, star.parent.position);
-      fitCameraToSelection(camera, star.parent.position, controls, star, 1.5);
+      fitCameraToSelection(
+        camera,
+        star.parent.position,
+        controls,
+        star,
+        1.5,
+        systemParameters
+      );
       currentTargetObject.push(star);
     });
 
@@ -88,7 +97,14 @@ const GenerateNav = (
           // controls.target = planet.position;
           // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
           // fitCameraToObject(planet, planet.position);
-          fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+          fitCameraToSelection(
+            camera,
+            planet.position,
+            controls,
+            planet,
+            1.5,
+            systemParameters
+          );
           currentTargetObject.push(planet);
         });
       });
@@ -129,7 +145,14 @@ const GenerateNav = (
       // fitCameraToObject(camera, planet, planet.position, 1.25, controls);
       // console.log(planet);
       // fitCameraToObject(planet, planet.position);
-      fitCameraToSelection(camera, planet.position, controls, planet, 1.5);
+      fitCameraToSelection(
+        camera,
+        planet.position,
+        controls,
+        planet,
+        1.5,
+        systemParameters
+      );
       currentTargetObject.push(planet);
     });
   });

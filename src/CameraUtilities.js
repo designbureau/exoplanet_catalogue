@@ -9,7 +9,8 @@ export function fitCameraToSelection(
   newTarget,
   controls,
   selection,
-  fitOffset = 1.5
+  fitOffset = 1.5,
+  systemParameters
 ) {
   const box = new THREE.Box3();
 
@@ -25,6 +26,9 @@ export function fitCameraToSelection(
   const fitWidthDistance = fitHeightDistance / camera.aspect;
   const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
 
+  const oldSpeed = systemParameters.speed;
+  let newSpeed = 0;
+
   const direction = controls.target
     .clone()
     .sub(camera.position)
@@ -32,6 +36,9 @@ export function fitCameraToSelection(
     .multiplyScalar(distance);
 
   // controls.maxDistance = distance * 10;
+
+  systemParameters.speed = 0;
+
   controls.target.copy(newTarget);
 
   controls.target.set(newTarget.x, newTarget.y, newTarget.z);
@@ -42,6 +49,8 @@ export function fitCameraToSelection(
 
   camera.position.copy(controls.target).sub(direction);
   controls.target = new Vector3(newTarget.x, newTarget.y, newTarget.z);
+
+  systemParameters.speed = oldSpeed;
 
   controls.update();
 }

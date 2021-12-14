@@ -367,7 +367,8 @@ const loadSystem = (system) => {
       scene,
       camera,
       controls,
-      currentTargetObject
+      currentTargetObject,
+      systemParameters
     );
 
     const tick = () => {

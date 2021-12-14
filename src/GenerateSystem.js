@@ -220,6 +220,8 @@ const generateSystem = (
       planetMesh.rotation.x = Math.PI * 0.5;
 
       const ellipse = getEllipse(semimajoraxis, eccentricity);
+      const periapsis =
+        getPeriapsis(semimajoraxis, eccentricity) - semimajoraxis;
 
       //Orbits
       const curve = new THREE.EllipseCurve(
@@ -249,6 +251,9 @@ const generateSystem = (
       orbitsGroup.add(planetMesh, orbitEllipse);
       // orbitsGroup.rotation.x = inclination;
       orbitsGroup.rotation.x = inclination / 90;
+
+      orbitsGroup.position.x = periapsis;
+      console.log("periapsis", periapsis);
       // console.log("inclination", inclination);
 
       // console.log(orbitsGroup);
@@ -374,12 +379,11 @@ const generateSystem = (
 
       //1. Calculate absolute visual magnitude
       Mv = mv - 5 * (Math.log10(distance) - 1);
-
-      console.log("Mv", Mv);
+      // console.log("Mv", Mv);
 
       //2. Calculate bolometric magnitude
       Mbol = Mv + bc;
-      console.log("Mbol", Mbol);
+      // console.log("Mbol", Mbol);
 
       // 3. Calculate absolute luminosity
       // Where:
@@ -389,8 +393,7 @@ const generateSystem = (
       // 2.5 is a constant value used for comparing stellar luminosities -- known as "Pogson's Ratio."
 
       Lstar = Math.pow(10, (Mbol - 4.72) / -2.5);
-
-      console.log("Lstar", Lstar);
+      // console.log("Lstar", Lstar);
 
       // Stage 2: Approximate the radii of the host star’s habitable zone boundaries
 
@@ -407,8 +410,8 @@ const generateSystem = (
       innerRadius = Math.sqrt(Lstar / 1.1) * adjustedAU;
       outerRadius = Math.sqrt(Lstar / 0.53) * adjustedAU;
 
-      console.log("innerRadius", innerRadius);
-      console.log("outerRadius", outerRadius);
+      // console.log("innerRadius", innerRadius);
+      // console.log("outerRadius", outerRadius);
 
       const habitableZoneGeometry = new THREE.RingGeometry(
         innerRadius,
