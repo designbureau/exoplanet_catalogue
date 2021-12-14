@@ -76,7 +76,18 @@ const galaxyMaterial = new THREE.MeshBasicMaterial({
 const systemParameters = {};
 systemParameters.distance = 1;
 systemParameters.speed = 0.005;
-gui
+systemParameters.showHabitableZone = true;
+
+const systemFolder = gui.addFolder("System Attributes");
+systemFolder
+  .add(systemParameters, "showHabitableZone")
+  .name("Show Habitable Zone")
+  .listen()
+  .onChange(function () {
+    // console.log(systemParameters.showHabitableZone);
+  });
+
+systemFolder
   .add(systemParameters, "speed")
   .name("Orbit Speed")
   .min(0)
@@ -147,14 +158,14 @@ controlsFolder
   .name("Orbit")
   .listen()
   .onChange(function () {
-    setChecked("orbit");
+    setControlChecked("orbit");
   });
 controlsFolder
   .add(controlParams, "none")
   .name("None")
   .listen()
   .onChange(function () {
-    setChecked("none");
+    setControlChecked("none");
   });
 
 controlsFolder
@@ -162,7 +173,7 @@ controlsFolder
   .name("Fly")
   .listen()
   .onChange(function () {
-    setChecked("fly");
+    setControlChecked("fly");
   });
 
 controlsFolder
@@ -197,7 +208,7 @@ controlsFolder.add(controlParams, "dragToLook").onChange(() => {
   }
 });
 
-function setChecked(prop) {
+function setControlChecked(prop) {
   for (let param in controlParams) {
     controlParams[param] = false;
   }
@@ -378,6 +389,12 @@ const loadSystem = (system) => {
 
       allStarsArray.map((star) => {
         star.mesh.rotation.y = Math.PI * 0.005 * elapsedTime;
+
+        if (systemParameters.showHabitableZone === true) {
+          star.habitableZone.visible = true;
+        } else {
+          star.habitableZone.visible = false;
+        }
       });
 
       allPlanetsArray.map((planet, i) => {

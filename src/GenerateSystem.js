@@ -442,6 +442,7 @@ const generateSystem = (
       allStarsArray.push({
         mesh: starMesh,
         planets: star.hasOwnProperty("planet") ? star.planet : null,
+        habitableZone: habitableZoneMesh,
       });
 
       //render planets
