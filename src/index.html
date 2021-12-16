@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exoplanets</title>
+    <script type="text/javascript" src="noise.js"></script>
   </head>
   <body>
     <canvas class="webgl"></canvas>
@@ -14,6 +15,10 @@
     </nav>
     <nav id="system_list_nav" class="hide">
       <button id="system_list_nav_toggle">Menu</button>
+      <div id="search_wrapper">  
+        <input type="text" id="autocomplete" placeholder="Select a system..."></input>
+        <ul id="results"></ul>
+      </div>
     </nav>
   </body>
 </html>

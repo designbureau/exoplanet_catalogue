@@ -6,6 +6,7 @@
 html,
 body {
   overflow: hidden;
+  background: black;
 }
 
 .webgl {
@@ -123,5 +124,9 @@ button#system_list_nav_toggle {
 }
 
 #system_nav.hide ul {
+  display: none;
+}
+
+.system_list.hide {
   display: none;
 }

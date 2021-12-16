@@ -32,6 +32,21 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
+scene.background = new THREE.CubeTextureLoader()
+  .setPath("textures/cubemaps/nasa/8k/compressed/")
+  .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
+
+// scene.background = new THREE.CubeTextureLoader()
+//   .setPath("textures/cubemaps/ksp/")
+//   .load([
+//     "GalaxyTex_PositiveX.png",
+//     "GalaxyTex_NegativeX.png",
+//     "GalaxyTex_PositiveY.png",
+//     "GalaxyTex_NegativeY.png",
+//     "GalaxyTex_PositiveZ.png",
+//     "GalaxyTex_NegativeZ.png",
+//   ]);
+
 /**
  * Lights
  */
@@ -59,23 +74,25 @@ const scene = new THREE.Scene();
 // scene.add(pointLight);
 
 /**
+ * Lights
+ */
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.01);
+// gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
+scene.add(ambientLight);
+
+/**
  * textures
  */
 
 const textureLoader = new THREE.TextureLoader();
-const galaxyNormalTexture = textureLoader.load(
-  "/textures/8k_stars_milky_way.jpeg"
-);
-const galaxyMaterial = new THREE.MeshBasicMaterial({
-  map: galaxyNormalTexture,
-});
+
 /**
  * Objects
  */
 
 const systemParameters = {};
 systemParameters.distance = 1;
-systemParameters.speed = 0.005;
+systemParameters.speed = 0.00001;
 systemParameters.showHabitableZone = true;
 
 const systemFolder = gui.addFolder("System Attributes");
@@ -92,7 +109,7 @@ systemFolder
   .name("Orbit Speed")
   .min(0)
   .max(0.5)
-  .step(0.001);
+  .step(0.00001);
 
 var options = {
   compact: true,
@@ -129,7 +146,7 @@ window.addEventListener("resize", () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-  45,
+  50,
   sizes.width / sizes.height,
   0.1,
   100000000
@@ -222,7 +239,8 @@ let controls;
 const toggleControl = () => {
   if (controlParams.orbit === true) {
     controls = new OrbitControls(camera, canvas);
-    controls.enableDamping = false;
+    controls.enableDamping = true;
+    // controls.rotate = -Math.PI * 0.5;
     canvas.classList.add("cursor-grab");
     canvas.classList.remove("cursor-crosshair");
   }
@@ -309,9 +327,11 @@ window.addEventListener("click", () => {
 });
 
 const systemNavToggle = document.getElementById("system_list_nav_toggle");
-const systemsDirectory = systemDirectory();
+const systemsData = systemDirectory();
 const systemNav = document.getElementById("system_list_nav");
 const systemList = document.createElement("ul");
+systemList.setAttribute("class", "system_list");
+
 systemNav.append(systemList);
 
 systemNavToggle.addEventListener("click", (e) => {
@@ -320,7 +340,7 @@ systemNavToggle.addEventListener("click", (e) => {
     : systemNav.classList.add("hide");
 });
 
-systemsDirectory.map((system) => {
+systemsData.map((system) => {
   const systemListItem = document.createElement("li");
   const systemItem = document.createElement("button");
   systemItem.setAttribute("data-system", system);
@@ -332,7 +352,6 @@ systemsDirectory.map((system) => {
 
   systemItem.addEventListener("click", (e) => {
     const system = e.currentTarget.dataset.system;
-    console.log(system);
     loadSystem(system);
   });
 });
@@ -343,6 +362,57 @@ navToggle.addEventListener("click", (e) => {
   nav.classList.contains("hide")
     ? nav.classList.remove("hide")
     : nav.classList.add("hide");
+});
+
+const autocomplete = document.getElementById("autocomplete");
+const resultsHTML = document.getElementById("results");
+
+function getResults(input) {
+  const results = [];
+  for (let i = 0; i < systemsData.length; i++) {
+    if (
+      input.toUpperCase() ===
+      systemsData[i].slice(0, input.length).toUpperCase()
+    ) {
+      results.push(systemsData[i]);
+    }
+  }
+  return results;
+}
+
+resultsHTML.addEventListener("click", (e) => {
+  const setValue = e.target.innerText;
+  autocomplete.value = setValue;
+  resultsHTML.innerHTML = "";
+});
+
+autocomplete.addEventListener("input", (e) => {
+  let results = [];
+  let userInput = autocomplete.value;
+  resultsHTML.innerHTML = "";
+  if (userInput.length > 0) {
+    systemList.classList.add("hide");
+    results = getResults(userInput);
+    resultsHTML.style.display = "block";
+
+    results.map((system) => {
+      const systemListItem = document.createElement("li");
+      const systemItem = document.createElement("button");
+      systemItem.setAttribute("data-system", system);
+      systemItem.setAttribute("class", "system-button");
+      systemItem.append(system.replace(".xml", ""));
+
+      systemListItem.append(systemItem);
+      resultsHTML.append(systemListItem);
+
+      systemItem.addEventListener("click", (e) => {
+        const system = e.currentTarget.dataset.system;
+        loadSystem(system);
+      });
+    });
+  } else {
+    systemList.classList.remove("hide");
+  }
 });
 
 const loadSystem = (system) => {

@@ -26,31 +26,27 @@ export function fitCameraToSelection(
   const fitWidthDistance = fitHeightDistance / camera.aspect;
   const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
 
-  const oldSpeed = systemParameters.speed;
-  let newSpeed = 0;
-
   const direction = controls.target
     .clone()
     .sub(camera.position)
     .normalize()
     .multiplyScalar(distance);
 
-  // controls.maxDistance = distance * 10;
+  // controls.target.copy(newTarget);
 
-  systemParameters.speed = 0;
+  // controls.target.set(newTarget.x, newTarget.y, newTarget.z);
 
-  controls.target.copy(newTarget);
+  const newTargetVec3 = new Vector3(newTarget.x, newTarget.y, newTarget.z);
+  // controls.target = newTargetVec3;
 
-  controls.target.set(newTarget.x, newTarget.y, newTarget.z);
+  controls.target = selection.position;
 
-  // camera.near = distance / 100;
-  // camera.far = distance * 100;
   camera.updateProjectionMatrix();
+  camera.lookAt(newTargetVec3);
+
+  // controls.target = new Vector3(newTarget.x, newTarget.y, newTarget.z);
 
   camera.position.copy(controls.target).sub(direction);
-  controls.target = new Vector3(newTarget.x, newTarget.y, newTarget.z);
-
-  systemParameters.speed = oldSpeed;
 
   controls.update();
 }

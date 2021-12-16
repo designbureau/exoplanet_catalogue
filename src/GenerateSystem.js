@@ -5,6 +5,7 @@ import {
   getPeriapsis,
   getSemiMinorAxis,
 } from "./HelperFunctions";
+import proceduralMaterialGenerator from "./ProceduralTextures";
 
 /**
  * textures
@@ -36,9 +37,11 @@ const starMaterial = new THREE.MeshBasicMaterial({
   map: starNormalTexture,
 });
 
-const jupiterMaterial = new THREE.MeshStandardMaterial({
-  map: jupiterNormalTexture,
-});
+// const jupiterMaterial = new THREE.MeshStandardMaterial({
+//   map: jupiterNormalTexture,
+// });
+
+const jupiterMaterial = proceduralMaterialGenerator();
 
 const neptuneMaterial = new THREE.MeshStandardMaterial({
   map: neptuneNormalTexture,
@@ -105,13 +108,6 @@ const generateSystem = (
   const defaultBinarySeparation = 20; //known average
   const defaultSemimajoraxis = 1;
   let adjustedAU = au * systemParameters.distance;
-
-  /**
-   * Lights
-   */
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.01);
-  // gui.add(ambientLight, "intensity").min(0).max(1).step(0.001);
-  scene.add(ambientLight);
 
   /**
    * Planet Renderer
@@ -317,6 +313,7 @@ const generateSystem = (
 
       starMesh.name = name;
       starMesh.objectType = "star";
+      starMesh.rotation.x = -Math.PI * 0.5;
 
       // console.log("star", starMesh);
 
@@ -419,17 +416,18 @@ const generateSystem = (
         128
       );
       const habitableZoneMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
+        color: 0x008080,
         side: THREE.DoubleSide,
       });
       habitableZoneMaterial.transparent = true;
-      habitableZoneMaterial.opacity = 0.1;
+      habitableZoneMaterial.opacity = 0.15;
       const habitableZoneMesh = new THREE.Mesh(
         habitableZoneGeometry,
         habitableZoneMaterial
       );
       //Z fighting fix needed for binaries
-      // habitableZoneMesh.rotation.x = Math.PI * 0.001 * i;
+      habitableZoneMesh.rotation.y = Math.PI * i * 0.025;
+      console.log(i);
 
       starGroup.add(starMesh, habitableZoneMesh);
 
